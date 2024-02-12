@@ -41,9 +41,12 @@ export default function EditScreenInfo({ path }: { path: string }) {
           className="my-2"
           href="https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet"
         >
-          <Text className="text-center" lightColor={Colors.light.tint}>
+          <Text
+            className="font-bold text-purple-400"
+            lightColor={Colors.light.tint}
+          >
             Tap here if your app doesn't automatically update after making
-            changes
+            changes. There's help.
           </Text>
         </ExternalLink>
       </View>
