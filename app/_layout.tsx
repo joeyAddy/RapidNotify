@@ -10,6 +10,8 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
 import { useColorScheme } from "@/components/useColorScheme";
+import { PaperProvider } from "react-native-paper";
+import Toast from "react-native-toast-message";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -53,18 +55,21 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen
-          name="(user)/onboarding/index"
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="(user)/auth/index"
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-      </Stack>
+      <PaperProvider>
+        <Stack>
+          <Stack.Screen
+            name="(user)/onboarding/index"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(user)/auth/index"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+        </Stack>
+      </PaperProvider>
+      <Toast position="bottom" bottomOffset={20} />
     </ThemeProvider>
   );
 }

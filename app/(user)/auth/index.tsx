@@ -4,9 +4,19 @@ import { StatusBar } from "expo-status-bar";
 import { TextInput } from "react-native-paper";
 import { Image, Pressable } from "react-native";
 import { useRouter } from "expo-router";
+import Toast from "react-native-toast-message";
 
 const Login = () => {
   const router = useRouter();
+
+  const handleLogin = () => {
+    router.push("/(dashboard)");
+    Toast.show({
+      swipeable: true,
+      text1: "You have successfully logged",
+      text2: "Welcome back",
+    });
+  };
   return (
     <SafeAreaView className="flex-1 bg-gray px-6 pt-8 space-y-5">
       <StatusBar translucent />
@@ -26,7 +36,7 @@ const Login = () => {
         </View>
       </View>
 
-      <View className="w-full space-y-4 ">
+      <View className="w-full space-y-4">
         <TextInput
           mode="outlined"
           label="Staff Code"
@@ -40,7 +50,7 @@ const Login = () => {
         />
 
         <Pressable
-          onPress={() => router.push("/(tabs)")}
+          onPress={handleLogin}
           className="bg-purple-600 !rounded-full w-fit h-14 items-center justify-center"
         >
           <Text className="text-white font-medium text-lg">Login</Text>

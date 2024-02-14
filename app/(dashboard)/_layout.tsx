@@ -6,6 +6,7 @@ import { Pressable } from "react-native";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
+import { Text, View } from "@/components/Themed";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -32,9 +33,20 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Dashboard",
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name="home" color={focused ? "#9333ea" : color} />
+            <View className="items-center bg-transparent">
+              <TabBarIcon name="home" color={focused ? "#9333ea" : color} />
+              <Text
+                className="text-[10px]"
+                lightColor={focused ? "#9333ea" : color}
+                darkColor={focused ? "#9333ea" : color}
+              >
+                Dashboard
+              </Text>
+            </View>
           ),
+
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
@@ -52,11 +64,38 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="profile/index"
         options={{
-          title: "Tab Two",
+          title: "Profile",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name="gear" color={focused ? "#9333ea" : color} />
+            <View className="items-center bg-transparent">
+              <TabBarIcon name="user" color={focused ? "#9333ea" : color} />
+              <Text
+                className={`text-[10px]`}
+                lightColor={focused ? "#9333ea" : color}
+                darkColor={focused ? "#9333ea" : color}
+              >
+                Me
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: "settings",
+          tabBarIcon: ({ color, focused }) => (
+            <View className="items-center bg-transparent">
+              <TabBarIcon name="gear" color={focused ? "#9333ea" : color} />
+              <Text
+                className={`text-[10px]`}
+                lightColor={focused ? "#9333ea" : color}
+                darkColor={focused ? "#9333ea" : color}
+              >
+                Settings
+              </Text>
+            </View>
           ),
         }}
       />
