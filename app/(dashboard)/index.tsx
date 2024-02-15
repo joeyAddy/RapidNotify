@@ -27,7 +27,7 @@ export default function TabOneScreen() {
           className="w-fit bg-transparent"
           name="sign-out"
           size={30}
-          color={Colors.light.text}
+          color={Colors[colorScheme ?? "light"].text}
         />
       </View>
       <View className="">
@@ -122,7 +122,7 @@ export default function TabOneScreen() {
         <View
           style={{
             borderWidth: 2,
-            // borderColor: Colors[colorScheme ?? "light"].text,
+            borderColor: Colors[colorScheme ?? "light"].text,
           }}
           className="rounded-xl h-full items-center py-6 px-5 w-fit justify-between"
         >
