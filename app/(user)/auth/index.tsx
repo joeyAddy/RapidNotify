@@ -23,7 +23,7 @@ const Login = () => {
       <View>
         <View className="w-full mt-3 items-center">
           <Image
-            source={require("../../../assets/images/lock.png")}
+            source={require("../../../assets/images/lock-old.png")}
             className="w-full h-32 self-center mb-4"
             style={{ resizeMode: "contain" }}
           />

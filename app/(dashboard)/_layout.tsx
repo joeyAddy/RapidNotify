@@ -86,7 +86,7 @@ export default function TabLayout() {
         options={{
           title: "settings",
           tabBarIcon: ({ color, focused }) => (
-            <View className="items-center bg-transparent">
+            <View className="items-center bg-transparent items-center">
               <TabBarIcon name="gear" color={focused ? "#9333ea" : color} />
               <Text
                 className={`text-[10px]`}

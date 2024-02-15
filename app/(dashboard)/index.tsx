@@ -4,17 +4,40 @@ import { Button } from "react-native-paper";
 import Currency from "react-currency-formatter";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
+import LottieView from "lottie-react-native";
+import { useEffect, useRef } from "react";
 
 export default function TabOneScreen() {
   const colorScheme = useColorScheme();
+
+  const animationRef = useRef<LottieView>(null);
+
+  useEffect(() => {
+    animationRef.current?.play();
+  }, []);
   return (
-    <SafeAreaView className="flex-1 px-6 pt-4">
-      <View className="pt-5">
+    <SafeAreaView className="flex-1 px-6">
+      <View className="flex-row items-center justify-between">
         <Image
-          source={require("../../assets/images/lock.png")}
-          className="w-full h-28 self-center mb-4"
+          source={require("../../assets/images/icon.png")}
+          className="w-10 h-10"
           style={{ resizeMode: "contain" }}
         />
+        <FontAwesome
+          className="w-fit bg-transparent"
+          name="sign-out"
+          size={30}
+          color={Colors.light.text}
+        />
+      </View>
+      <View className="">
+        <View className="w-full h-28 self-center mb-4 items-center">
+          <LottieView
+            source={require("../../assets/lottie/avatar.json")}
+            style={{ width: "100%", height: "100%" }}
+          />
+        </View>
+
         <Text className="text-center text-2xl text-gray-500">
           Hello{" "}
           <Text className="font-bold text-black dark:text-white">Username</Text>
