@@ -1,5 +1,5 @@
 import { SafeAreaView, Text, View } from "@/components/Themed";
-import { Image, ScrollView, useColorScheme } from "react-native";
+import { Image, useColorScheme } from "react-native";
 import { Button } from "react-native-paper";
 import Currency from "react-currency-formatter";
 import { FontAwesome } from "@expo/vector-icons";
@@ -10,6 +10,7 @@ import { useEffect, useRef } from "react";
 export default function TabOneScreen() {
   const colorScheme = useColorScheme();
 
+  // Reference to lottie
   const animationRef = useRef<LottieView>(null);
 
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function TabOneScreen() {
           <LottieView
             source={require("../../assets/lottie/avatar.json")}
             style={{ width: "100%", height: "100%" }}
+            ref={animationRef}
           />
         </View>
 
