@@ -3,6 +3,7 @@ import React from "react";
 import { OnboardFlow } from "react-native-onboard";
 import { useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
+import { OnboardingDataType, onboardingData } from "@/locales";
 
 export default function indext() {
   const router = useRouter();
@@ -33,32 +34,13 @@ export default function indext() {
       subtitleStyle={{
         color: Colors[colorScheme ?? "light"].text,
       }}
-      pages={[
-        {
-          title: "Welcome!",
-          subtitle:
-            "Your one-stop app for efficient filling station staff management and financial tracking",
-          imageUri: Image.resolveAssetSource(
-            require("../../../assets/images/onboarding-illustration-1.png")
-          ).uri,
-        },
-        {
-          title: "Manage Your Sales with Ease",
-          subtitle:
-            "Save time and effort with our intuitive tools for scheduling, tasks, and communication",
-          imageUri: Image.resolveAssetSource(
-            require("../../../assets/images/onboarding-illustration-2.png")
-          ).uri,
-        },
-        {
-          title: "Stay on Top of Your Finances",
-          subtitle:
-            "Gain real-time visibility into sales, expenses, and profitability with our comprehensive reports",
-          imageUri: Image.resolveAssetSource(
-            require("../../../assets/images/onboarding-illustration-3.png")
-          ).uri,
-        },
-      ]}
+      pages={
+        onboardingData.map((item: OnboardingDataType) => ({
+          title: item.title,
+          subtitle: item.subtitle,
+          imageUri: item.imageUri,
+        })) as any
+      }
       type={"fullscreen"}
     />
   );

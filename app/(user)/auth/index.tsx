@@ -24,7 +24,7 @@ const Login = () => {
         <View className="w-full mt-3 items-center">
           <Image
             source={require("../../../assets/images/lock.png")}
-            className="w-full h-32 self-center mb-4"
+            className="w-full h-32 self-center mb-20"
             style={{ resizeMode: "contain" }}
           />
           <Text className="text-4xl font-bold text-center">
@@ -45,7 +45,7 @@ const Login = () => {
           outlineColor="gray"
           activeOutlineColor="rgb(147 51 234)"
           placeholderTextColor="rgb(147 51 234)"
-          className="h-14 bg-gray-50 px-2"
+          className="h-14 text-3xl text-center text-slate-600 bg-gray-50 px-2"
           outlineStyle={{ borderRadius: 50 }}
         />
 
