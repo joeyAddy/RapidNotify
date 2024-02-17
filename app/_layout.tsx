@@ -13,6 +13,13 @@ import { useColorScheme } from "@/components/useColorScheme";
 import { PaperProvider } from "react-native-paper";
 import Toast from "react-native-toast-message";
 
+// Jotai is a primitive and flexible state management library for React.
+//  is a smaller, faster and more flexible alternative to Recoil.
+import { Provider as JotaiProvider } from "jotai";
+// The store is a collection of atoms and derived values
+// that can be used to manage the state of your application.
+import { store } from "@/store";
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -54,22 +61,24 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <PaperProvider>
-        <Stack>
-          <Stack.Screen
-            name="(user)/onboarding/index"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="(user)/auth/index"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-        </Stack>
-      </PaperProvider>
-      <Toast position="bottom" bottomOffset={20} />
-    </ThemeProvider>
+    <JotaiProvider {...store}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <PaperProvider>
+          <Stack>
+            <Stack.Screen
+              name="(user)/onboarding/index"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="(user)/auth/index"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+          </Stack>
+        </PaperProvider>
+        <Toast position="bottom" bottomOffset={20} />
+      </ThemeProvider>
+    </JotaiProvider>
   );
 }

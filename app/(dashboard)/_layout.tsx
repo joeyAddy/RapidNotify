@@ -31,8 +31,6 @@ export default function TabLayout() {
           paddingTop: 5,
           paddingBottom: 2,
           height: 70,
-          borderTopRightRadius: 30,
-          borderTopLeftRadius: 30,
           backgroundColor: Colors[colorScheme ?? "light"].background,
         },
       }}
@@ -51,7 +49,7 @@ export default function TabLayout() {
                 lightColor={focused ? "#9333ea" : color}
                 darkColor={focused ? "#9333ea" : color}
               >
-                Dashboard
+                Home
               </Text>
             </View>
           ),
@@ -75,11 +73,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="sales/index"
         options={{
-          title: "sales",
+          title: "Sales",
           href: "/sales",
           tabBarIcon: ({ color, focused }) => (
             <View className="items-center bg-transparent">
-              <TabBarIcon name="gear" color={focused ? "#9333ea" : color} />
+              <TabBarIcon
+                name="shopping-bag"
+                color={focused ? "#9333ea" : color}
+              />
               <Text
                 className={`text-base`}
                 lightColor={focused ? "#9333ea" : color}
@@ -93,19 +94,19 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="settings/index"
+        name="explore/index"
         options={{
-          title: "settings",
-          href: "/settings",
+          title: "Explore",
+          href: "/explore",
           tabBarIcon: ({ color, focused }) => (
             <View className="items-center bg-transparent">
-              <TabBarIcon name="gear" color={focused ? "#9333ea" : color} />
+              <TabBarIcon name="globe" color={focused ? "#9333ea" : color} />
               <Text
                 className={`text-base`}
                 lightColor={focused ? "#9333ea" : color}
                 darkColor={focused ? "#9333ea" : color}
               >
-                Settings
+                Explore
               </Text>
             </View>
           ),
