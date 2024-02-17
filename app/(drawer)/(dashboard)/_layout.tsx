@@ -34,6 +34,7 @@ export default function TabLayout() {
           borderTopRightRadius: 30,
           borderTopLeftRadius: 30,
           backgroundColor: Colors[colorScheme ?? "light"].background,
+          position: "relative",
         },
       }}
     >
@@ -71,51 +72,11 @@ export default function TabLayout() {
           ),
         }}
       />
-
-      <Tabs.Screen
-        name="sales/index"
-        options={{
-          title: "Profile",
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-            <View className="items-center bg-transparent">
-              <TabBarIcon name="gear" color={focused ? "#9333ea" : color} />
-              <Text
-                className={`text-base`}
-                lightColor={focused ? "#9333ea" : color}
-                darkColor={focused ? "#9333ea" : color}
-              >
-                Sales
-              </Text>
-            </View>
-          ),
-        }}
-      />
-
-      <Tabs.Screen
-        name="settings/index"
-        options={{
-          title: "settings",
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-            <View className="bg-transparent items-center">
-              <TabBarIcon name="gear" color={focused ? "#9333ea" : color} />
-              <Text
-                className={`text-base`}
-                lightColor={focused ? "#9333ea" : color}
-                darkColor={focused ? "#9333ea" : color}
-              >
-                Settings
-              </Text>
-            </View>
-          ),
-        }}
-      />
-
       <Tabs.Screen
         name="profile/index"
         options={{
           title: "Profile",
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <View className="items-center bg-transparent">
               <TabBarIcon name="user" color={focused ? "#9333ea" : color} />

@@ -3,19 +3,22 @@ import {
   DrawerContentComponentProps,
   DrawerItem,
 } from "@react-navigation/drawer";
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
 import { View } from "../Themed";
-import { Image, useColorScheme } from "react-native";
+import { Image, StyleSheet, useColorScheme } from "react-native";
 import Colors from "@/constants/Colors";
 
 const DashboardDrawerMenu = (props: DrawerContentComponentProps) => {
   console.log("====================================");
   console.log("PROPS", props.state);
   console.log("====================================");
+
   const colorScheme = useColorScheme();
+
+  const pathName = usePathname();
   return (
-    <View className="flex-1 pt-20 px-4">
+    <View className="flex-1 pt-20">
       <View className="w-full h-14 mb-4">
         <Image
           className="h-full w-auto -ml-[38%]"
@@ -30,10 +33,24 @@ const DashboardDrawerMenu = (props: DrawerContentComponentProps) => {
       </View>
       <DrawerItem
         pressColor={Colors[colorScheme ?? "light"].tint}
-        labelStyle={{ color: Colors[colorScheme ?? "light"].text }}
+        labelStyle={[
+          style.drawerItemsStyle,
+          {
+            color: Colors[colorScheme ?? "light"].drawerItemIcon,
+          },
+        ]}
+        style={{
+          justifyContent: "center",
+          backgroundColor: pathName === "/blog" ? "#9333ea" : "white",
+          paddingHorizontal: 5,
+        }}
         label={"Blog"}
         icon={({ color, size }) => (
-          <FontAwesome name="newspaper-o" size={size} color={color} />
+          <FontAwesome
+            name="newspaper-o"
+            size={size}
+            color={Colors[colorScheme ?? "light"].tint}
+          />
         )}
         onPress={() => {
           router.push("/(drawer)/blog");
@@ -44,3 +61,10 @@ const DashboardDrawerMenu = (props: DrawerContentComponentProps) => {
 };
 
 export default DashboardDrawerMenu;
+
+const style = StyleSheet.create({
+  drawerItemsStyle: {
+    marginLeft: -20,
+    fontSize: 18,
+  },
+});

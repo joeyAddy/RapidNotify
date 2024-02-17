@@ -37,7 +37,7 @@ const blogPosts = [
     isPinned: false,
     isRead: true,
     isLiked: true,
-    image: "https://example.com/image2.jpg",
+    image: "https://links.papareact.com/wrug",
   },
   {
     id: "3",

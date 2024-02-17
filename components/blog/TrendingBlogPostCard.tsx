@@ -1,8 +1,9 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { Text, View } from "../Themed";
 import { BlogPost } from "@/locales";
-import { Image } from "react-native";
+import { Image, useColorScheme } from "react-native";
 import blogPosts from "@/locales/blog"; // should come from global state
+import Colors from "@/constants/Colors";
 
 interface TrendingBlogPostCardProps {
   index: number;
@@ -10,12 +11,16 @@ interface TrendingBlogPostCardProps {
 }
 
 const TrendingBlogPostCard = ({ index, post }: TrendingBlogPostCardProps) => {
+  const colorScheme = useColorScheme();
   return (
     <View
-      className={`w-60 h-[50%] relative ${index === blogPosts.length - 1 ? "mr-8" : "mr-4"}`}
+      style={{
+        borderColor: Colors[colorScheme ?? "dark"].text,
+      }}
+      className={`w-60 h-[50%] relative dark:border-2 rounded-xl  ${index === blogPosts.length - 1 ? "mr-8" : "mr-4"}`}
     >
       <Image
-        className="h-full w-full"
+        className="h-full w-full rounded-xl"
         source={{
           uri: post.image,
         }}
