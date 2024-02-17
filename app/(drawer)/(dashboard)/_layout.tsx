@@ -31,8 +31,6 @@ export default function TabLayout() {
           paddingTop: 5,
           paddingBottom: 2,
           height: 70,
-          borderTopRightRadius: 30,
-          borderTopLeftRadius: 30,
           backgroundColor: Colors[colorScheme ?? "light"].background,
           position: "relative",
         },
@@ -41,7 +39,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Dashboard",
+          title: "Home",
           href: "/",
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
@@ -52,7 +50,7 @@ export default function TabLayout() {
                 lightColor={focused ? "#9333ea" : color}
                 darkColor={focused ? "#9333ea" : color}
               >
-                Dashboard
+                Home
               </Text>
             </View>
           ),
@@ -72,10 +70,57 @@ export default function TabLayout() {
           ),
         }}
       />
+
+      <Tabs.Screen
+        name="sales/index"
+        options={{
+          title: "Profile",
+          href: "/sales",
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <View className="items-center bg-transparent">
+              <TabBarIcon
+                name="shopping-bag"
+                color={focused ? "#9333ea" : color}
+              />
+              <Text
+                className={`text-base`}
+                lightColor={focused ? "#9333ea" : color}
+                darkColor={focused ? "#9333ea" : color}
+              >
+                My Sales
+              </Text>
+            </View>
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="explore/index"
+        options={{
+          title: "Explore",
+          href: "/explore",
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <View className="bg-transparent items-center">
+              <TabBarIcon name="globe" color={focused ? "#9333ea" : color} />
+              <Text
+                className={`text-base`}
+                lightColor={focused ? "#9333ea" : color}
+                darkColor={focused ? "#9333ea" : color}
+              >
+                Explore
+              </Text>
+            </View>
+          ),
+        }}
+      />
+
       <Tabs.Screen
         name="profile/index"
         options={{
           title: "Profile",
+          href: "/profile",
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <View className="items-center bg-transparent">

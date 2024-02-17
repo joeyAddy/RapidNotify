@@ -18,14 +18,27 @@ const DrawerLayout = () => {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer
         screenOptions={{
-          headerTitle: () => (
-            <Text className="text-xl text-gray-500">
-              Welcome{" "}
-              <Text className="font-bold text-black dark:text-white">
-                Ifebuche
+          headerTitle: () =>
+            pathName === "/" ? (
+              <Text className="text-xl text-gray-500">
+                Welcome{" "}
+                <Text className="font-bold text-black dark:text-white">
+                  Ifebuche
+                </Text>
               </Text>
-            </Text>
-          ),
+            ) : pathName === "/profile" ? (
+              <Text className="text-xl font-bold text-black dark:text-white">
+                Profile
+              </Text>
+            ) : pathName === "/sales" ? (
+              <Text className="text-xl font-bold text-black dark:text-white">
+                Sales
+              </Text>
+            ) : (
+              <Text className="text-xl font-bold text-black dark:text-white">
+                Explore
+              </Text>
+            ),
           headerLeft: () => (
             <DrawerToggleButton
               tintColor={Colors[colorScheme ?? "light"].text}
@@ -37,7 +50,15 @@ const DrawerLayout = () => {
                 {({ pressed }) => (
                   <FontAwesome
                     className="w-fit bg-transparent"
-                    name={pathName === "/" ? "support" : "sign-out"}
+                    name={
+                      pathName === "/"
+                        ? "headphones"
+                        : pathName === "/sales"
+                          ? "print"
+                          : pathName === "/explore"
+                            ? "eyedropper"
+                            : "sign-out"
+                    }
                     size={30}
                     color={Colors[colorScheme ?? "light"].text}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}

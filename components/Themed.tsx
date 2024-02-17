@@ -4,7 +4,10 @@
  */
 
 import { Text as DefaultText, View as DefaultView } from "react-native";
-import { SafeAreaView as DefaultSafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView as DefaultSafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "./useColorScheme";
@@ -51,6 +54,7 @@ export function View(props: ViewProps) {
 }
 
 export function SafeAreaView(props: ViewProps) {
+  const insets = useSafeAreaInsets();
   const { style, lightColor, darkColor, ...otherProps } = props;
   const backgroundColor = useThemeColor(
     { light: lightColor, dark: darkColor },
@@ -58,6 +62,9 @@ export function SafeAreaView(props: ViewProps) {
   );
 
   return (
-    <DefaultSafeAreaView style={[{ backgroundColor }, style]} {...otherProps} />
+    <DefaultSafeAreaView
+      style={[{ backgroundColor, paddingTop: insets.top }, style]}
+      {...otherProps}
+    />
   );
 }
