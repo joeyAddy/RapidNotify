@@ -11,7 +11,7 @@ export default function indext() {
   const PageHeader = () => {
     return (
       <View className="w-full items-center mt-3 bg-transparent">
-        <Text className="text-xl font-bold dark:text-white">GUAGEIT</Text>
+        <Text className="font-extrabold dark:text-white text-4xl">. . .</Text>
       </View>
     );
   };

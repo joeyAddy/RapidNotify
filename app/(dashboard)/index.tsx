@@ -1,29 +1,36 @@
 import { SafeAreaView, Text, View } from "@/components/Themed";
-import { Image, useColorScheme } from "react-native";
+import { Image, Pressable, useColorScheme } from "react-native";
 import { Button } from "react-native-paper";
 import Currency from "react-currency-formatter";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
 import LottieView from "lottie-react-native";
 import { useEffect, useRef } from "react";
+import { useRouter } from "expo-router";
 
 export default function TabOneScreen() {
   const colorScheme = useColorScheme();
-
   // Reference to lottie
   const animationRef = useRef<LottieView>(null);
-
+  const router = useRouter();
   useEffect(() => {
     animationRef.current?.play();
   }, []);
   return (
-    <SafeAreaView className="flex-1 px-6">
-      <View className="flex-row items-center justify-between">
-        <Image
-          source={require("../../assets/images/icon.png")}
-          className="w-10 h-10"
-          style={{ resizeMode: "contain" }}
-        />
+    <SafeAreaView className="flex-1 px-4">
+      <View nativeID="1" className="flex-row items-center justify-between">
+        <Pressable
+          className="bg-transparent"
+          onPress={() => {
+            router.push("/(user)/auth");
+          }}
+        >
+          <Image
+            source={require("../../assets/images/icon.png")}
+            className="w-14 h-14"
+            style={{ resizeMode: "contain" }}
+          />
+        </Pressable>
         <FontAwesome
           className="w-fit bg-transparent"
           name="sign-out"
@@ -31,7 +38,7 @@ export default function TabOneScreen() {
           color={Colors[colorScheme ?? "light"].text}
         />
       </View>
-      <View className="">
+      <View nativeID="2" className="">
         <View className="w-full h-28 self-center mb-4 items-center">
           <LottieView
             source={require("../../assets/lottie/avatar.json")}
@@ -42,17 +49,25 @@ export default function TabOneScreen() {
 
         <Text className="text-center text-2xl text-gray-500">
           Hello{" "}
-          <Text className="font-bold text-black dark:text-white">Username</Text>
+          <Text className="font-bold text-black dark:text-white">Ifebuche</Text>
         </Text>
       </View>
-      <View className="w-full h-[28%] rounded-xl bg-purple-600 mt-6">
+      <View className="w-full h-[28%] rounded-xl bg-purple-700 mt-6">
         <View className="flex-row justify-between bg-white/30 items-center px-6 py-3">
           <Text className="text-lg text-white font-bold">
-            #2024<Text className="text-white/50 font-thin">Report</Text>
+            Today{" | "}
+            <Text className="text-white font-thin">
+              <FontAwesome
+                className="w-fit bg-white text-whte"
+                name="sign-out"
+                size={20}
+                color="white"
+              />
+            </Text>
           </Text>
-          <Button className="bg-white px-1">
+          <Button className="bg-white px-1 py-0 rounded-mlg">
             <Text darkColor="black" className="font-bold">
-              View Details
+              View Sales
             </Text>
           </Button>
         </View>

@@ -1,0 +1,6 @@
+{
+    "window.zoomLevel": 2,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "react-native-tools.networkInspector.consoleLogsColorTheme": "Dark"
+}
