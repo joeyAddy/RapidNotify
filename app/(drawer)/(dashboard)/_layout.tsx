@@ -67,6 +67,7 @@ export default function TabLayout() {
         name="profile/index"
         options={{
           title: "Profile",
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <View className="items-center bg-transparent">
               <TabBarIcon name="user" color={focused ? "#9333ea" : color} />
@@ -85,8 +86,9 @@ export default function TabLayout() {
         name="settings"
         options={{
           title: "settings",
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <View className="items-center bg-transparent items-center">
+            <View className="bg-transparent items-center">
               <TabBarIcon name="gear" color={focused ? "#9333ea" : color} />
               <Text
                 className={`text-[10px]`}

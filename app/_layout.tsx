@@ -65,7 +65,7 @@ function RootLayoutNav() {
             name="(user)/auth/index"
             options={{ headerShown: false }}
           />
-          <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
           <Stack.Screen name="modal" options={{ presentation: "modal" }} />
         </Stack>
       </PaperProvider>
