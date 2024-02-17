@@ -1,9 +1,17 @@
 {
   "expo": {
-    "name": "guageit",
+    "name": "GuageIt POS",
     "slug": "guageit",
     "version": "1.0.0",
+    "description": "GuageIt POS is a no-nonsense point of sale system for petrol stations and gas stations",
     "orientation": "portrait",
+    "sdkVersion": "50.0.0",
+    "privacy": "public",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",

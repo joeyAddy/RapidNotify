@@ -41,11 +41,11 @@ const Login = () => {
           mode="outlined"
           label="6-digits Staff Code"
           keyboardType="phone-pad"
-          placeholder="e.g 123456"
+          placeholder="123456"
           outlineColor="gray"
           activeOutlineColor="rgb(147 51 234)"
           placeholderTextColor="rgb(147 51 234)"
-          className="h-14 text-2xl text-center text-slate-600 bg-gray-50 px-2"
+          className="h-14 text-2xl text-center font-semiboldr text-slate-600 bg-gray-50 px-2"
           outlineStyle={{ borderRadius: 230 }}
         />
 
