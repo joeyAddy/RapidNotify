@@ -35,7 +35,7 @@ export default function TabLayout() {
           title: "Dashboard",
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <View className="items-center bg-transparent">
+            <View className="items-center bg-transparent text-3xl">
               <TabBarIcon name="home" color={focused ? "#9333ea" : color} />
               <Text
                 className="text-[10px]"
@@ -86,7 +86,7 @@ export default function TabLayout() {
         options={{
           title: "settings",
           tabBarIcon: ({ color, focused }) => (
-            <View className="items-center bg-transparent items-center">
+            <View className="items-center bg-transparent">
               <TabBarIcon name="gear" color={focused ? "#9333ea" : color} />
               <Text
                 className={`text-[10px]`}

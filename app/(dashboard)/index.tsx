@@ -56,13 +56,14 @@ export default function TabOneScreen() {
         <View className="flex-row justify-between bg-white/30 items-center px-6 py-3">
           <Text className="text-lg text-white font-bold">
             Today{" | "}
-            <Text className="text-white font-thin">
+            <Text className="text-white font-thin hover:text-yellow-500">
               <FontAwesome
                 className="w-fit bg-white text-whte"
                 name="sign-out"
                 size={20}
                 color="white"
-              />
+              />{" "}
+              search
             </Text>
           </Text>
           <Button className="bg-white px-1 py-0 rounded-mlg">
