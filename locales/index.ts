@@ -1,1 +1,2 @@
-export * from './onbaording'
+export * from "./onbaording";
+export * from "./blog";

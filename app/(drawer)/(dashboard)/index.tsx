@@ -4,66 +4,30 @@ import { Button } from "react-native-paper";
 import Currency from "react-currency-formatter";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
-import LottieView from "lottie-react-native";
 import { useEffect, useRef } from "react";
 import { useRouter } from "expo-router";
 
-export default function TabOneScreen() {
+export default function DashboardHome() {
   const colorScheme = useColorScheme();
   // Reference to lottie
-  const animationRef = useRef<LottieView>(null);
   const router = useRouter();
-  useEffect(() => {
-    animationRef.current?.play();
-  }, []);
+
   return (
     <SafeAreaView className="flex-1 px-4">
-      <View nativeID="1" className="flex-row items-center justify-between">
-        <Pressable
-          className="bg-transparent"
-          onPress={() => {
-            router.push("/(dashboard)/profile");
-          }}
-        >
-          <Image
-            source={require("../../assets/images/icon.png")}
-            className="w-14 h-14"
-            style={{ resizeMode: "contain" }}
-          />
-        </Pressable>
-        <FontAwesome
-          className="w-fit bg-transparent"
-          name="sign-out"
-          size={30}
-          color={Colors[colorScheme ?? "light"].text}
-        />
-      </View>
-      <View nativeID="2" className="">
-        <View className="w-full h-28 self-center mb-4 items-center">
-          <LottieView
-            source={require("../../assets/lottie/avatar.json")}
-            style={{ width: "100%", height: "100%" }}
-            ref={animationRef}
-          />
-        </View>
-
-        <Text className="text-center text-2xl text-gray-500">
-          Hello{" "}
-          <Text className="font-bold text-black dark:text-white">Ifebuche</Text>
-        </Text>
-      </View>
-      <View className="w-full h-[28%] rounded-xl bg-purple-700 mt-6">
+      <View
+        nativeID="1"
+        className="w-full h-[30%] -mt-5 rounded-xl bg-purple-700"
+      >
         <View className="flex-row justify-between bg-white/30 items-center px-6 py-3">
           <Text className="text-lg text-white font-bold">
             Today{" | "}
-            <Text className="text-white font-thin hover:text-yellow-500">
+            <Text className="text-white font-thin">
               <FontAwesome
                 className="w-fit bg-white text-whte"
                 name="sign-out"
                 size={20}
                 color="white"
-              />{" "}
-              search
+              />
             </Text>
           </Text>
           <Button className="bg-white px-1 py-0 rounded-mlg">
@@ -120,7 +84,7 @@ export default function TabOneScreen() {
       >
         <View className="flex-row space-x-2 items-center bg-transparent">
           <Image
-            source={require("../../assets/images/balance-icon.png")}
+            source={require("../../../assets/images/balance-icon.png")}
             className="w-8 h-8"
             style={{ resizeMode: "contain" }}
           />

@@ -73,8 +73,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="sales/index"
         options={{
-          title: "Sales",
-          href: "/sales",
+          title: "Profile",
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <View className="items-center bg-transparent">
               <TabBarIcon
@@ -96,11 +96,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="explore/index"
         options={{
-          title: "Explore",
-          href: "/explore",
+          title: "settings",
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <View className="items-center bg-transparent">
-              <TabBarIcon name="globe" color={focused ? "#9333ea" : color} />
+            <View className="bg-transparent items-center">
+              <TabBarIcon name="gear" color={focused ? "#9333ea" : color} />
               <Text
                 className={`text-base`}
                 lightColor={focused ? "#9333ea" : color}

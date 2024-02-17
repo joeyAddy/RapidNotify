@@ -1,0 +1,148 @@
+export type BlogPost = {
+  id: string; // Unique identifier for each blog post
+  title: string; // Engaging and informative title
+  category: string; // Enum or string-based categories (e.g., fuel trends, safety tips, customer service)
+  content: string; // Engaging and well-formatted content, potentially with images or videos
+  author: string; // Author name or department (e.g., "Fuel Management Team")
+  timeOfUpload: Date; // Actual timestamp for accurate time display
+  relativeTime: string; // Human-readable relative time using a library like `timeago.js` or custom logic
+  isPinned: boolean; // Optional flag for highlighting important posts
+  isRead: boolean; // Optional flag to track individual staff member's blog read status:
+  isLiked: boolean; // Optional flag to track individual staff memeber's blog like
+  image: string; // url of image
+};
+
+const blogPosts = [
+  {
+    id: "1",
+    title: "Top 5 Fuel Efficiency Tips",
+    category: "fuel trends",
+    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    author: "Fuel Management Team",
+    timeOfUpload: new Date("2024-02-16T08:00:00Z"),
+    relativeTime: "2 hours ago",
+    isPinned: true,
+    isRead: false,
+    isLiked: false,
+    image: "https://links.papareact.com/wru",
+  },
+  {
+    id: "2",
+    title: "Safety Tips for Handling Fuel",
+    category: "safety tips",
+    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    author: "Safety Department",
+    timeOfUpload: new Date("2024-02-15T10:30:00Z"),
+    relativeTime: "yesterday",
+    isPinned: false,
+    isRead: true,
+    isLiked: true,
+    image: "https://example.com/image2.jpg",
+  },
+  {
+    id: "3",
+    title: "Customer Service Best Practices",
+    category: "customer service",
+    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    author: "Customer Service Team",
+    timeOfUpload: new Date("2024-02-14T14:45:00Z"),
+    relativeTime: "2 days ago",
+    isPinned: false,
+    isRead: true,
+    isLiked: false,
+    image: "https://example.com/image3.jpg",
+  },
+  {
+    id: "4",
+    title: "New Fuel Types Explained",
+    category: "fuel trends",
+    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    author: "Fuel Management Team",
+    timeOfUpload: new Date("2024-02-13T09:15:00Z"),
+    relativeTime: "3 days ago",
+    isPinned: false,
+    isRead: false,
+    isLiked: false,
+    image: "https://example.com/image4.jpg",
+  },
+  {
+    id: "5",
+    title: "Emergency Response Procedures",
+    category: "safety tips",
+    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    author: "Safety Department",
+    timeOfUpload: new Date("2024-02-12T11:20:00Z"),
+    relativeTime: "4 days ago",
+    isPinned: false,
+    isRead: true,
+    isLiked: true,
+    image: "https://example.com/image5.jpg",
+  },
+  {
+    id: "6",
+    title: "Improving Customer Experience",
+    category: "customer service",
+    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    author: "Customer Service Team",
+    timeOfUpload: new Date("2024-02-11T13:30:00Z"),
+    relativeTime: "5 days ago",
+    isPinned: false,
+    isRead: false,
+    isLiked: false,
+    image: "https://example.com/image6.jpg",
+  },
+  {
+    id: "7",
+    title: "Benefits of Regular Vehicle Maintenance",
+    category: "fuel trends",
+    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    author: "Fuel Management Team",
+    timeOfUpload: new Date("2024-02-10T16:00:00Z"),
+    relativeTime: "6 days ago",
+    isPinned: false,
+    isRead: true,
+    isLiked: false,
+    image: "https://example.com/image7.jpg",
+  },
+  {
+    id: "8",
+    title: "Safety Gear for Fuel Handling",
+    category: "safety tips",
+    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    author: "Safety Department",
+    timeOfUpload: new Date("2024-02-09T18:45:00Z"),
+    relativeTime: "1 week ago",
+    isPinned: false,
+    isRead: false,
+    isLiked: false,
+    image: "https://example.com/image8.jpg",
+  },
+  {
+    id: "9",
+    title: "Effective Communication with Customers",
+    category: "customer service",
+    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    author: "Customer Service Team",
+    timeOfUpload: new Date("2024-02-08T20:30:00Z"),
+    relativeTime: "1 week ago",
+    isPinned: false,
+    isRead: true,
+    isLiked: true,
+    image: "https://example.com/image9.jpg",
+  },
+  {
+    id: "10",
+    title: "Understanding Fuel Quality Standards",
+    category: "fuel trends",
+    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    author: "Fuel Management Team",
+    timeOfUpload: new Date("2024-02-07T22:15:00Z"),
+    relativeTime: "1 week ago",
+    isPinned: false,
+    isRead: false,
+    isLiked: false,
+    image: "https://example.com/image10.jpg",
+  },
+];
+
+export default blogPosts;

@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
+    "@react-navigation/drawer": "^6.6.7",
     "@react-navigation/native": "^6.0.2",
     "@tailwindcss/typography": "^0.5.10",
     "@types/react-currency-formatter": "^1.1.7",
@@ -36,7 +37,7 @@
     "react-native-gesture-handler": "~2.14.0",
     "react-native-onboard": "^2.6.0",
     "react-native-paper": "^5.12.3",
-    "react-native-reanimated": "^3.7.0",
+    "react-native-reanimated": "~3.6.2",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "4.8.2",
     "react-native-screens": "~3.29.0",
