@@ -23,12 +23,12 @@ const Login = () => {
       <View>
         <View className="w-full mt-3 items-center">
           <Image
-            source={require("../../../assets/images/lock-old.png")}
+            source={require("../../../assets/images/lock.png")}
             className="w-full h-32 self-center mb-4"
             style={{ resizeMode: "contain" }}
           />
           <Text className="text-4xl font-bold text-center">
-            Login with your Staff Code
+            Enter Staff Code
           </Text>
           <Text className="text-xl text-center text-gray-600 font-bold">
             The code sent to your email
