@@ -22,7 +22,7 @@ export default function TabOneScreen() {
         <Pressable
           className="bg-transparent"
           onPress={() => {
-            router.push("/(user)/auth");
+            router.push("/(dashboard)/profile");
           }}
         >
           <Image

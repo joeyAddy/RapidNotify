@@ -2,12 +2,14 @@ import { View, Text } from "react-native";
 import React from "react";
 import { SafeAreaView } from "@/components/Themed";
 
-const Profile = () => {
+const ProfileScreen = () => {
   return (
     <SafeAreaView className="flex-1 px-6">
-      <Text>Profile</Text>
+      <View className="flex-1 items-center justify-center ">
+        <Text className="text-lg text-center font-bold">Profile Screen</Text>
+      </View>
     </SafeAreaView>
   );
 };
 
-export default Profile;
+export default ProfileScreen;
