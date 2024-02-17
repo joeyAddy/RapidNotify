@@ -38,7 +38,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Dashboard",
+          title: "Home",
           href: "/",
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
@@ -74,6 +74,7 @@ export default function TabLayout() {
         name="sales/index"
         options={{
           title: "Profile",
+          href: "/sales",
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <View className="items-center bg-transparent">
@@ -86,7 +87,7 @@ export default function TabLayout() {
                 lightColor={focused ? "#9333ea" : color}
                 darkColor={focused ? "#9333ea" : color}
               >
-                Sales
+                My Sales
               </Text>
             </View>
           ),
@@ -96,11 +97,12 @@ export default function TabLayout() {
       <Tabs.Screen
         name="explore/index"
         options={{
-          title: "settings",
+          title: "Explore",
+          href: "/explore",
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <View className="bg-transparent items-center">
-              <TabBarIcon name="gear" color={focused ? "#9333ea" : color} />
+              <TabBarIcon name="globe" color={focused ? "#9333ea" : color} />
               <Text
                 className={`text-base`}
                 lightColor={focused ? "#9333ea" : color}
@@ -117,6 +119,7 @@ export default function TabLayout() {
         name="profile/index"
         options={{
           title: "Profile",
+          href: "/profile",
           tabBarIcon: ({ color, focused }) => (
             <View className="items-center bg-transparent">
               <TabBarIcon name="user" color={focused ? "#9333ea" : color} />

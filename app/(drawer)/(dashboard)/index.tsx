@@ -14,10 +14,7 @@ export default function DashboardHome() {
 
   return (
     <SafeAreaView className="flex-1 px-4">
-      <View
-        nativeID="1"
-        className="w-full h-[30%] -mt-5 rounded-xl bg-purple-700"
-      >
+      <View className="w-full h-[30%] -mt-5 rounded-xl bg-purple-700">
         <View className="flex-row justify-between bg-white/30 items-center px-6 py-3">
           <Text className="text-lg text-white font-bold">
             Today{" | "}

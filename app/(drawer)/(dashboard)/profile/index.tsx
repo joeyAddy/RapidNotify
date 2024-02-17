@@ -115,46 +115,6 @@ export default function Profile() {
           />
         </View>
       </View>
-      <View className="flex-row justify-between my-5 h-[25%]">
-        <View
-          style={{
-            borderWidth: 2,
-            borderColor: Colors[colorScheme ?? "light"].text,
-          }}
-          className="rounded-xl h-full items-center py-6 px-5 w-fit justify-between"
-        >
-          <FontAwesome
-            name="minus-circle"
-            size={24}
-            color={Colors[colorScheme ?? "dark"].text}
-          />
-          <View className="items-center bg-transparent">
-            <Text className="text-gray-500">Shortage</Text>
-            <Text className="text-xl dark:text-white font-bold">
-              <Currency currency="NGN" quantity={5400} />
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            borderWidth: 2,
-            borderColor: Colors[colorScheme ?? "dark"].text,
-          }}
-          className="rounded-xl h-full items-center py-6 px-5 w-fit justify-between"
-        >
-          <FontAwesome
-            name="plus-circle"
-            size={24}
-            color={Colors[colorScheme ?? "dark"].text}
-          />
-          <View className="items-center bg-transparent">
-            <Text className="text-gray-500">Overgage</Text>
-            <Text className="text-xl dark:text-white font-bold">
-              <Currency currency="NGN" quantity={5200} />
-            </Text>
-          </View>
-        </View>
-      </View>
     </SafeAreaView>
   );
 }
