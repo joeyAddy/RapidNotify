@@ -50,7 +50,7 @@ const DrawerLayout = () => {
                     className="w-fit bg-transparent"
                     name={
                       pathName === "/"
-                        ? "headphones"
+                        ? "bell-o"
                         : pathName === "/sales"
                           ? "print"
                           : pathName === "/explore"
