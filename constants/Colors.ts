@@ -10,7 +10,8 @@ export default {
     tabIconDefault: "#ccc",
     tabIconSelected: tintColorLight,
     drawerItemBackground: "#9333ea",
-    drawerItemIcon: "#ccc",
+    drawerItemColor: "#000",
+    tabBarLabelColor: "#ccc",
   },
   dark: {
     text: "#fff",
@@ -20,6 +21,7 @@ export default {
     tabIconDefault: "#ccc",
     tabIconSelected: tintColorDark,
     drawerItemBackground: "#111",
-    drawerItemIcon: "#000",
+    drawerItemColor: "#000",
+    tabBarLabelColor: "#ccc",
   },
 };

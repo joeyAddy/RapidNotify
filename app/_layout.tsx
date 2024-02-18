@@ -19,6 +19,7 @@ import { Provider as JotaiProvider } from "jotai";
 // The store is a collection of atoms and derived values
 // that can be used to manage the state of your application.
 import { store } from "@/store";
+import Colors from "@/constants/Colors";
 
 export {
   // Catch any errors thrown by the Layout component.

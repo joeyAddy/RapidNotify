@@ -7,6 +7,10 @@ import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { Text, View } from "@/components/Themed";
+import {
+  useNavigation,
+  getFocusedRouteNameFromRoute,
+} from "@react-navigation/native";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -19,39 +23,58 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
+  const navigation = useNavigation();
+
+  const getTabBarLabelColor = (isFocused: boolean) => {
+    if (isFocused) {
+      return "#9333ea";
+    }
+    return "gray";
+  };
+
+  const getTabBarLabelStyle = (isFocused: boolean) => {
+    return {
+      color: getTabBarLabelColor(isFocused),
+      marginTop: -5,
+      fontSize: 15,
+    };
+  };
+
   return (
     <Tabs
-      screenOptions={{
+      screenOptions={({ route }) => ({
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
+        tabBarLabelStyle: getTabBarLabelStyle(
+          route.name ===
+            getFocusedRouteNameFromRoute(
+              navigation.getState().routes[navigation.getState().index]
+            )
+        ),
+
         tabBarStyle: {
           paddingTop: 5,
-          paddingBottom: 2,
+          paddingBottom: 8,
           height: 70,
+          paddingHorizontal: 15,
           backgroundColor: Colors[colorScheme ?? "light"].background,
-          position: "relative",
+          borderTopRightRadius: 30,
+          borderTopLeftRadius: 30,
         },
-      }}
+      })}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: "Dashboard",
           href: "/",
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <View className="items-center bg-transparent">
               <TabBarIcon name="home" color={focused ? "#9333ea" : color} />
-              <Text
-                className="text-base"
-                lightColor={focused ? "#9333ea" : color}
-                darkColor={focused ? "#9333ea" : color}
-              >
-                Home
-              </Text>
             </View>
           ),
           headerRight: () => (
@@ -74,7 +97,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="sales/index"
         options={{
-          title: "Profile",
+          title: "Sales",
           href: "/sales",
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
@@ -83,13 +106,6 @@ export default function TabLayout() {
                 name="shopping-bag"
                 color={focused ? "#9333ea" : color}
               />
-              <Text
-                className={`text-base`}
-                lightColor={focused ? "#9333ea" : color}
-                darkColor={focused ? "#9333ea" : color}
-              >
-                My Sales
-              </Text>
             </View>
           ),
         }}
@@ -104,13 +120,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <View className="bg-transparent items-center">
               <TabBarIcon name="globe" color={focused ? "#9333ea" : color} />
-              <Text
-                className={`text-base`}
-                lightColor={focused ? "#9333ea" : color}
-                darkColor={focused ? "#9333ea" : color}
-              >
-                Explore
-              </Text>
             </View>
           ),
         }}
@@ -125,13 +134,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <View className="items-center bg-transparent">
               <TabBarIcon name="user" color={focused ? "#9333ea" : color} />
-              <Text
-                className={`text-base`}
-                lightColor={focused ? "#9333ea" : color}
-                darkColor={focused ? "#9333ea" : color}
-              >
-                Profile
-              </Text>
             </View>
           ),
         }}

@@ -12,8 +12,6 @@ const DrawerLayout = () => {
 
   const pathName = usePathname();
 
-  console.log(pathName);
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer

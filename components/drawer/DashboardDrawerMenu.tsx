@@ -4,19 +4,25 @@ import {
   DrawerItem,
 } from "@react-navigation/drawer";
 import { router, usePathname } from "expo-router";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { View } from "../Themed";
 import { Image, StyleSheet, useColorScheme } from "react-native";
 import Colors from "@/constants/Colors";
+import {
+  drawerItems,
+  FontAwesomeIconName,
+  MaterialCommunityIconsIconName,
+} from "@/locales";
 
 const DashboardDrawerMenu = (props: DrawerContentComponentProps) => {
-  console.log("====================================");
-  console.log("PROPS", props.state);
-  console.log("====================================");
-
   const colorScheme = useColorScheme();
 
   const pathName = usePathname();
+
+  const isFontAwesomeIconName = (name: string): name is FontAwesomeIconName => {
+    return name in FontAwesome.glyphMap;
+  };
+
   return (
     <View className="flex-1 pt-20">
       <View className="w-full h-14 mb-4">
@@ -31,31 +37,55 @@ const DashboardDrawerMenu = (props: DrawerContentComponentProps) => {
           }}
         />
       </View>
-      <DrawerItem
-        pressColor={Colors[colorScheme ?? "light"].tint}
-        labelStyle={[
-          style.drawerItemsStyle,
-          {
-            color: Colors[colorScheme ?? "light"].drawerItemIcon,
-          },
-        ]}
-        style={{
-          justifyContent: "center",
-          backgroundColor: pathName === "/blog" ? "#9333ea" : "white",
-          paddingHorizontal: 5,
-        }}
-        label={"Blog"}
-        icon={({ color, size }) => (
-          <FontAwesome
-            name="newspaper-o"
-            size={size}
-            color={Colors[colorScheme ?? "light"].tint}
-          />
-        )}
-        onPress={() => {
-          router.push("/(drawer)/blog");
-        }}
-      />
+      <View className="w-full border-[0.5px]" />
+      {drawerItems.map((item) => (
+        <DrawerItem
+          key={item.label}
+          pressColor={Colors[colorScheme ?? "light"].tint}
+          labelStyle={[
+            style.drawerItemsStyle,
+            {
+              color:
+                pathName === `/${item.label.toLowerCase()}`
+                  ? "white"
+                  : Colors[colorScheme ?? "light"].drawerItemColor,
+            },
+          ]}
+          style={{
+            justifyContent: "center",
+            backgroundColor:
+              pathName === `/${item.label.toLowerCase()}` ? "#9333ea" : "white",
+            paddingHorizontal: 5,
+          }}
+          label={item.label}
+          icon={({ size }) =>
+            isFontAwesomeIconName(item.iconName) ? (
+              <FontAwesome
+                name={item.iconName}
+                size={size}
+                color={
+                  pathName === "/blog"
+                    ? "white"
+                    : Colors[colorScheme ?? "light"].drawerItemColor
+                }
+              />
+            ) : (
+              <MaterialCommunityIcons
+                name={item.iconName}
+                size={size}
+                color={
+                  pathName === "/blog"
+                    ? "white"
+                    : Colors[colorScheme ?? "light"].drawerItemColor
+                }
+              />
+            )
+          }
+          onPress={() => {
+            router.push(`${item.path}`);
+          }}
+        />
+      ))}
     </View>
   );
 };
