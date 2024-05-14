@@ -1,10 +1,8 @@
+import {
+  FontAwesomeIconName,
+  MaterialCommunityIconsIconName,
+} from "@/interfaces/icon-names.interfaces";
 import { AllRoutes } from "expo-router";
-import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
-
-// Extract the available icon names from the FontAwesome component
-export type FontAwesomeIconName = keyof typeof FontAwesome.glyphMap;
-export type MaterialCommunityIconsIconName =
-  keyof typeof MaterialCommunityIcons.glyphMap;
 
 interface DrawerItems {
   label: string;
@@ -14,18 +12,28 @@ interface DrawerItems {
 
 export const drawerItems: DrawerItems[] = [
   {
-    label: "Blog",
-    path: "/(drawer)/blog",
+    label: "Dashboard",
+    path: "/(drawer)/dashboard",
     iconName: "newspaper-o",
   },
   {
-    label: "Leaderboard",
-    path: "/(drawer)/blog",
-    iconName: "podium",
+    label: "Account",
+    path: "/(drawer)/account",
+    iconName: "account",
+  },
+  {
+    label: "Report",
+    path: "/(drawer)/reports",
+    iconName: "file-chart",
+  },
+  {
+    label: "Resource directory",
+    path: "/(drawer)/resource-directory",
+    iconName: "database-marker",
   },
   {
     label: "Settings",
-    path: "/(drawer)/blog",
+    path: "/(drawer)/settings",
     iconName: "gear",
   },
 ];

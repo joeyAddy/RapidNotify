@@ -1,3 +1,5 @@
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   DarkTheme,
@@ -19,7 +21,33 @@ import { Provider as JotaiProvider } from "jotai";
 // The store is a collection of atoms and derived values
 // that can be used to manage the state of your application.
 import { store } from "@/store";
-import Colors from "@/constants/Colors";
+import { View } from "@/components/Themed";
+import { AppProvider } from "@/context/chatContext";
+
+import { OverlayProvider } from "stream-chat-expo";
+
+import * as TaskManager from "expo-task-manager";
+import * as Location from "expo-location";
+
+import { updateLocationToSecureStore } from "@/utils/updateLocationToSecurestore";
+import { Platform } from "react-native";
+import { PermissionsAndroid } from "react-native";
+
+interface GeofencingEventData {
+  eventType: Location.GeofencingEventType;
+  region: Location.LocationRegion;
+}
+
+interface Region {
+  identifier: string;
+  latitude: number;
+  longitude: number;
+  radius: number;
+}
+
+interface LocationTaskData {
+  locations: Location.LocationObject[];
+}
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -57,27 +85,199 @@ export default function RootLayout() {
 
   return <RootLayoutNav />;
 }
-
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+
+  // Location task definitiona
+  const BACKGROUND_LOCATION_UPDATE = "background-location-task";
+  const LOCATION_GEOFENCING = "user-location-geofencing";
+
+  const regions: Region[] = [
+    {
+      identifier: "Ungwan Maigero",
+      latitude: 10.486223,
+      longitude: 7.460618,
+      radius: 1000,
+    },
+    {
+      identifier: "region2",
+      latitude: 10.5167,
+      longitude: 7.4333,
+      radius: 2000,
+    },
+    // Add more regions as needed
+  ];
+
+  const kadunaStateBounds = {
+    minLatitude: 9.3636,
+    maxLatitude: 11.3636,
+    minLongitude: 6.0461,
+    maxLongitude: 8.0461,
+  };
+
+  const filterRegionsInKaduna = (regions: Region[]): Region[] => {
+    return regions.filter(
+      (region) =>
+        region.latitude >= kadunaStateBounds.minLatitude &&
+        region.latitude <= kadunaStateBounds.maxLatitude &&
+        region.longitude >= kadunaStateBounds.minLongitude &&
+        region.longitude <= kadunaStateBounds.maxLongitude
+    );
+  };
+
+  const startGeofencingForKadunaRegions = async () => {
+    const kadunaRegions = filterRegionsInKaduna(regions);
+
+    // Start geofencing for Kaduna regions
+    await Location.startGeofencingAsync(LOCATION_GEOFENCING, kadunaRegions);
+  };
+
+  const requestPermissions = async () => {
+    const { status: foregroundStatus } =
+      await Location.requestForegroundPermissionsAsync();
+    if (foregroundStatus === "granted") {
+      const { status: backgroundStatus } =
+        await Location.requestBackgroundPermissionsAsync();
+      if (backgroundStatus === "granted") {
+        await Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_UPDATE, {
+          accuracy: Location.Accuracy.Balanced,
+        });
+
+        // Call the function to start geofencing for Kaduna regions
+        await startGeofencingForKadunaRegions();
+      }
+    }
+  };
+
+  useEffect(() => {
+    requestPermissions();
+    const run = async () => {
+      if (Platform.OS === "android") {
+        await PermissionsAndroid.requestMultiple([
+          "android.permission.POST_NOTIFICATIONS",
+          "android.permission.BLUETOOTH_CONNECT",
+        ]);
+      }
+    };
+    run();
+  }, []);
+
+  TaskManager.defineTask(
+    BACKGROUND_LOCATION_UPDATE,
+    async ({ data, error }) => {
+      if (error) {
+        // Error occurred - check `error.message` for more details.
+        return;
+      }
+      if (data) {
+        const { locations } = data as LocationTaskData;
+        console.log("LOCATION", locations);
+
+        const address = await Location.reverseGeocodeAsync({
+          latitude: locations[0].coords.latitude,
+          longitude: locations[0].coords.longitude,
+        });
+
+        const finalLocation = {
+          latitude: locations[0].coords.latitude,
+          longitude: locations[0].coords.longitude,
+          ...address[0],
+        };
+
+        await updateLocationToSecureStore(finalLocation);
+        // do something with the locations captured in the background
+      }
+    }
+  );
+
+  TaskManager.defineTask(LOCATION_GEOFENCING, ({ data, error }) => {
+    if (error) {
+      // check `error.message` for more details.
+      return;
+    }
+
+    const eventData = data as GeofencingEventData; // Type assertion to GeofencingEventData
+
+    if (eventData.eventType === Location.GeofencingEventType.Enter) {
+      console.log("You've entered region:", eventData.region);
+    } else if (eventData.eventType === Location.GeofencingEventType.Exit) {
+      console.log("You've left region:", eventData.region);
+    }
+  });
 
   return (
     <JotaiProvider {...store}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <PaperProvider>
-          <Stack>
-            <Stack.Screen
-              name="(user)/onboarding/index"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="(user)/auth/index"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-            <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-          </Stack>
-        </PaperProvider>
+        <AppProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <PaperProvider>
+              <OverlayProvider>
+                <Stack>
+                  <Stack.Screen
+                    name="(user)/onboarding/index"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="forum"
+                    options={{
+                      headerTitle: "Forum",
+                      headerShadowVisible: false,
+                      headerRight: () => (
+                        <View className="flex-row items-center space-x-4">
+                          <FontAwesome name="search" size={24} />
+                          <FontAwesome name="bell-o" size={24} />
+                        </View>
+                      ),
+                    }}
+                  />
+                  <Stack.Screen
+                    name="notifications/index"
+                    options={{
+                      headerTitle: "Notifications",
+                      headerShadowVisible: false,
+                      headerRight: () => (
+                        <View className="flex-row items-center space-x-4">
+                          <FontAwesome name="search" size={24} />
+                        </View>
+                      ),
+                    }}
+                  />
+                  <Stack.Screen
+                    name="(user)/auth/signin/index"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="(user)/auth/signup/index"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="(drawer)"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="report/index"
+                    options={{
+                      headerTitle: "Send report",
+                      headerShadowVisible: false,
+                    }}
+                  />
+                  <Stack.Screen
+                    name="call/index"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="map/index"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="modal"
+                    options={{ presentation: "modal" }}
+                  />
+                </Stack>
+              </OverlayProvider>
+            </PaperProvider>
+          </GestureHandlerRootView>
+        </AppProvider>
         <Toast position="bottom" bottomOffset={20} />
       </ThemeProvider>
     </JotaiProvider>

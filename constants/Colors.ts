@@ -1,4 +1,4 @@
-const tintColorLight = "#9333ea";
+const tintColorLight = "#FC9F15";
 const tintColorDark = "#000";
 
 export default {
@@ -9,9 +9,10 @@ export default {
     tint: tintColorLight,
     tabIconDefault: "#ccc",
     tabIconSelected: tintColorLight,
-    drawerItemBackground: "#9333ea",
+    drawerItemBackground: tintColorLight,
     drawerItemColor: "#000",
     tabBarLabelColor: "#ccc",
+    buttonColors: tintColorLight,
   },
   dark: {
     text: "#fff",
@@ -23,5 +24,6 @@ export default {
     drawerItemBackground: "#111",
     drawerItemColor: "#000",
     tabBarLabelColor: "#ccc",
+    buttonColors: tintColorLight,
   },
 };

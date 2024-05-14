@@ -8,27 +8,35 @@ export type OnboardingDataType = {
 
 export const onboardingData = [
   {
-    title: "Welcome Rockseller!",
+    title: "Report issues with just a few taps",
     subtitle:
-      "Your one-stop app for efficient filling station staff management and financial tracking",
+      "We make it easy to report any suspicious activity, vandalism, or emergencies.",
     imageUri: Image.resolveAssetSource(
-      require("@assets/images/onboarding-illustration-1.png")
+      require("@assets/images/onboarding-image-1.png")
     ).uri,
   },
   {
-    title: "Sell Smarter & Safer",
+    title: "Geo-Tagging Technology",
     subtitle:
-      "Save time and effort with our intuitive tools for scheduling, tasks, and communication",
+      "Our app utilizes advanced geo-tagging technology to pinpoint your location accurately",
     imageUri: Image.resolveAssetSource(
-      require("@assets/images/onboarding-illustration-2.png")
+      require("@assets/images/onboarding-image-2.png")
     ).uri,
   },
   {
-    title: "Balance & Track Sales",
+    title: "Report safely and discreetly",
     subtitle:
-      "Gain real-time visibility into sales, expenses, and profitability with our comprehensive reports",
+      "You submit reports without disclosing your personal information, ensuring your safety and privacy.",
     imageUri: Image.resolveAssetSource(
-      require("@assets/images/onboarding-illustration-3.png")
+      require("@assets/images/onboarding-image-3.png")
+    ).uri,
+  },
+  {
+    title: "Get Real-Time Updates",
+    subtitle:
+      "As events unfold, you'll receive instant notifications and be able to follow the progress of response efforts.",
+    imageUri: Image.resolveAssetSource(
+      require("@assets/images/onboarding-image-4.png")
     ).uri,
   },
 ] as const;
