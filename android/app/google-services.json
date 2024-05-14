@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1044222374285",
+    "project_id": "rapidnotify-c9c0a",
+    "storage_bucket": "rapidnotify-c9c0a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044222374285:android:f5f73dd214ed341efbcdc4",
+        "android_client_info": {
+          "package_name": "com.joeydevs.rapid_notify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1044222374285-i2f492u85mm8okct1v01kvi0l93o3r41.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.joeydevs.rapid_notify",
+            "certificate_hash": "a2f600e59226e2be197a293de9131187f1342657"
+          }
+        },
+        {
+          "client_id": "1044222374285-v82g20lsmeqtapi9a27jidpo722ek0fp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB67ubovqg5wst1VEHcuL5yShvesfGsL20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1044222374285-v82g20lsmeqtapi9a27jidpo722ek0fp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

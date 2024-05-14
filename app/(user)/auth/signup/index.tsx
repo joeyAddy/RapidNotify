@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, SafeAreaView } from "@/components/Themed";
 import { StatusBar } from "expo-status-bar";
-import { ActivityIndicator, Divider, TextInput } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Divider,
+  Modal,
+  Portal,
+  TextInput,
+} from "react-native-paper";
 import { Image, Pressable, useColorScheme } from "react-native";
 import { useRouter } from "expo-router";
 import Toast from "react-native-toast-message";
@@ -10,6 +16,8 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
 import { createUser } from "@/services/user";
 import { getCurrentPositionAsync, reverseGeocodeAsync } from "expo-location";
+import { TouchableOpacity } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 
 const Login = () => {
   const router = useRouter();
@@ -23,7 +31,12 @@ const Login = () => {
   const [canSubmit, setCanSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSignup = async () => {
+  const [visible, setVisible] = useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+
+  const handleSignup = async (isCommunityWatch: boolean) => {
     console.log("asdfasd");
 
     if (email.trim().length < 1 || password.trim().length < 1) {
@@ -68,6 +81,7 @@ const Login = () => {
         fullName,
         location: finalLocation,
         profilePhotoUrl: "",
+        isCommunityWatch,
       };
 
       await createUser(user);
@@ -112,146 +126,188 @@ const Login = () => {
     }
   }, [password, email, confirmPassword]);
   return (
-    <View className="flex-1 bg-gray px-6">
-      <StatusBar translucent />
-      <View className="w-full mt-16">
-        <Text className="text-3xl font-bold mb-4">Sign up</Text>
-        <Text className="leading-5 mb-2">
-          Sign up now to access powerful tools for emergency reporting,
-          communication, and collaboration.
-        </Text>
-      </View>
-
-      <View className="w-full space-y-4">
-        <TextInput
-          mode="outlined"
-          label="Full Name"
-          placeholder="Enter your full name"
-          outlineColor={
-            fullName.trim().length > 0 ? "green" : Colors.light.tint
-          }
-          activeOutlineColor={fullName.trim().length > 0 ? "green" : "red"}
-          placeholderTextColor="red"
-          right={<TextInput.Icon icon="account" size={24} />}
-          className="h-14 text-base font-semiboldr text-slate-600 bg-gray-50 px-2"
-          outlineStyle={{ borderRadius: 0 }}
-          value={fullName}
-          onChangeText={(text) => setFullName(text)}
-        />
-        <TextInput
-          mode="outlined"
-          label="Email address"
-          keyboardType="email-address"
-          placeholder="Enter your email address"
-          outlineColor={email.trim().length > 0 ? "green" : Colors.light.tint}
-          activeOutlineColor={email.trim().length > 0 ? "green" : "red"}
-          placeholderTextColor="red"
-          right={<TextInput.Icon icon="email" size={24} />}
-          className="h-14 text-base font-semiboldr text-slate-600 bg-gray-50 px-2"
-          outlineStyle={{ borderRadius: 0 }}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-        <TextInput
-          mode="outlined"
-          label="Password"
-          secureTextEntry={true}
-          placeholder="Enter your password"
-          outlineColor={
-            password.trim().length > 0 ? "green" : Colors.light.tint
-          }
-          activeOutlineColor={password.trim().length > 0 ? "green" : "red"}
-          placeholderTextColor="red"
-          right={<TextInput.Icon icon="lock" size={24} />}
-          className="h-14 text-base font-semiboldr text-slate-600 bg-gray-50 px-2"
-          outlineStyle={{ borderRadius: 0 }}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-        />
-        <TextInput
-          mode="outlined"
-          label="Confirm Password"
-          secureTextEntry={true}
-          placeholder="Confirm Password"
-          outlineColor={canSubmit ? "green" : Colors.light.tint}
-          activeOutlineColor={canSubmit ? "green" : "red"}
-          placeholderTextColor="red"
-          right={<TextInput.Icon icon="lock" size={24} />}
-          className="h-14 text-base font-semiboldr text-slate-600 bg-gray-50 px-2"
-          outlineStyle={{ borderRadius: 0 }}
-          value={confirmPassword}
-          onChangeText={(text) => {
-            setConfirmPassword(text);
-            if (text !== password) {
-              Toast.show({
-                text1: "Match error",
-                text2: "Your passwords must be the same.",
-                swipeable: true,
-                autoHide: true,
-                topOffset: 40,
-                position: "top",
-                type: "error",
-              });
-            } else {
-              Toast.show({
-                text1: "Great!",
-                text2: "Your passwords match",
-                swipeable: true,
-                autoHide: true,
-                topOffset: 40,
-                position: "top",
-                type: "success",
-              });
-            }
+    <>
+      <Portal>
+        <Modal
+          visible={visible}
+          onDismiss={hideModal}
+          contentContainerStyle={{
+            margin: 20,
+            borderRadius: 10,
+            backgroundColor: "white",
+            padding: 20,
           }}
-        />
-
-        <Pressable
-          onPress={handleSignup}
-          disabled={!canSubmit}
-          style={{
-            backgroundColor: Colors[colorScheme ?? "light"].buttonColors,
-            opacity: canSubmit ? 1 : 0.5,
-          }}
-          className="w-fit h-14 items-center justify-center"
         >
-          {loading ? (
-            <ActivityIndicator size={24} color="white" />
-          ) : (
-            <Text className="text-white font-medium text-lg">Sign up</Text>
-          )}
-        </Pressable>
-        <View className="w-full items-center space-y-4">
-          <View className="flex-row space-x-1 items-center">
-            <Text className="font-medium text-gray-500 text-base">
-              Don't have an account?
-            </Text>
-            <Pressable onPress={() => router.push("/(user)/auth/signin")}>
-              <Text className="font-extrabold text-base">Sign in here</Text>
+          <Text className="text-center mb-4 font-bold">
+            Would you volunteer as a watch for your community?
+          </Text>
+
+          <View className="flex-row space-x-4 mt-6">
+            <TouchableOpacity
+              onPress={() => {
+                hideModal();
+                const isCommunityWatch = false;
+                handleSignup(isCommunityWatch);
+              }}
+              className="rounded-md border border-orange-400 items-center h-14 justify-center flex-[.5]"
+            >
+              <Text className="font-bold">No</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                hideModal();
+                const isCommunityWatch = true;
+                handleSignup(isCommunityWatch);
+              }}
+              className="rounded-md border bg-green-700 items-center h-14 justify-center flex-[.5] flex-row space-x-2"
+            >
+              <FontAwesome name="phone" color="white" size={20} />
+              <Text className="font-bold text-white">Yes</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      </Portal>
+      <View className="flex-1 bg-gray px-6">
+        <StatusBar translucent />
+        <View className="w-full mt-16">
+          <Text className="text-3xl font-bold mb-4">Sign up</Text>
+          <Text className="leading-5 mb-2">
+            Sign up now to access powerful tools for emergency reporting,
+            communication, and collaboration.
+          </Text>
+        </View>
+
+        <View className="w-full space-y-4">
+          <TextInput
+            mode="outlined"
+            label="Full Name"
+            placeholder="Enter your full name"
+            outlineColor={
+              fullName.trim().length > 0 ? "green" : Colors.light.tint
+            }
+            activeOutlineColor={fullName.trim().length > 0 ? "green" : "red"}
+            placeholderTextColor="red"
+            right={<TextInput.Icon icon="account" size={24} />}
+            className="h-14 text-base font-semiboldr text-slate-600 bg-gray-50 px-2"
+            outlineStyle={{ borderRadius: 0 }}
+            value={fullName}
+            onChangeText={(text) => setFullName(text)}
+          />
+          <TextInput
+            mode="outlined"
+            label="Email address"
+            keyboardType="email-address"
+            placeholder="Enter your email address"
+            outlineColor={email.trim().length > 0 ? "green" : Colors.light.tint}
+            activeOutlineColor={email.trim().length > 0 ? "green" : "red"}
+            placeholderTextColor="red"
+            right={<TextInput.Icon icon="email" size={24} />}
+            className="h-14 text-base font-semiboldr text-slate-600 bg-gray-50 px-2"
+            outlineStyle={{ borderRadius: 0 }}
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+          />
+          <TextInput
+            mode="outlined"
+            label="Password"
+            secureTextEntry={true}
+            placeholder="Enter your password"
+            outlineColor={
+              password.trim().length > 0 ? "green" : Colors.light.tint
+            }
+            activeOutlineColor={password.trim().length > 0 ? "green" : "red"}
+            placeholderTextColor="red"
+            right={<TextInput.Icon icon="lock" size={24} />}
+            className="h-14 text-base font-semiboldr text-slate-600 bg-gray-50 px-2"
+            outlineStyle={{ borderRadius: 0 }}
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+          />
+          <TextInput
+            mode="outlined"
+            label="Confirm Password"
+            secureTextEntry={true}
+            placeholder="Confirm Password"
+            outlineColor={canSubmit ? "green" : Colors.light.tint}
+            activeOutlineColor={canSubmit ? "green" : "red"}
+            placeholderTextColor="red"
+            right={<TextInput.Icon icon="lock" size={24} />}
+            className="h-14 text-base font-semiboldr text-slate-600 bg-gray-50 px-2"
+            outlineStyle={{ borderRadius: 0 }}
+            value={confirmPassword}
+            onChangeText={(text) => {
+              setConfirmPassword(text);
+              if (text !== password) {
+                Toast.show({
+                  text1: "Match error",
+                  text2: "Your passwords must be the same.",
+                  swipeable: true,
+                  autoHide: true,
+                  topOffset: 40,
+                  position: "top",
+                  type: "error",
+                });
+              } else {
+                Toast.show({
+                  text1: "Great!",
+                  text2: "Your passwords match",
+                  swipeable: true,
+                  autoHide: true,
+                  topOffset: 40,
+                  position: "top",
+                  type: "success",
+                });
+              }
+            }}
+          />
+
+          <Pressable
+            onPress={showModal}
+            disabled={!canSubmit}
+            style={{
+              backgroundColor: Colors[colorScheme ?? "light"].buttonColors,
+              opacity: canSubmit ? 1 : 0.5,
+            }}
+            className="w-fit h-14 items-center justify-center"
+          >
+            {loading ? (
+              <ActivityIndicator size={24} color="white" />
+            ) : (
+              <Text className="text-white font-medium text-lg">Sign up</Text>
+            )}
+          </Pressable>
+          <View className="w-full items-center space-y-4">
+            <View className="flex-row space-x-1 items-center">
+              <Text className="font-medium text-gray-500 text-base">
+                Don't have an account?
+              </Text>
+              <Pressable onPress={() => router.push("/(user)/auth/signin")}>
+                <Text className="font-extrabold text-base">Sign in here</Text>
+              </Pressable>
+            </View>
+            <View className="flex-row items-center space-x-2">
+              <View className="border-b border-gray-500 flex-[6]" />
+              <Text>or</Text>
+              <View className="border-b border-gray-500 flex-[6]" />
+            </View>
+            <Pressable className="h-14 flex-row items-center px-8 border w-full border-gray-500">
+              <Image
+                source={require("@assets/images/google-icon.png")}
+                className="h-8 w-8 mr-8"
+              />
+              <Text className="font-medium">Sign in with google</Text>
+            </Pressable>
+            <Pressable className="h-14 flex-row items-center px-8 border w-full border-gray-500">
+              <Image
+                source={require("@assets/images/facebook-icon.png")}
+                className="h-8 w-8 mr-8"
+              />
+              <Text className="font-medium">Sign in with facebook</Text>
             </Pressable>
           </View>
-          <View className="flex-row items-center space-x-2">
-            <View className="border-b border-gray-500 flex-[6]" />
-            <Text>or</Text>
-            <View className="border-b border-gray-500 flex-[6]" />
-          </View>
-          <Pressable className="h-14 flex-row items-center px-8 border w-full border-gray-500">
-            <Image
-              source={require("@assets/images/google-icon.png")}
-              className="h-8 w-8 mr-8"
-            />
-            <Text className="font-medium">Sign in with google</Text>
-          </Pressable>
-          <Pressable className="h-14 flex-row items-center px-8 border w-full border-gray-500">
-            <Image
-              source={require("@assets/images/facebook-icon.png")}
-              className="h-8 w-8 mr-8"
-            />
-            <Text className="font-medium">Sign in with facebook</Text>
-          </Pressable>
         </View>
       </View>
-    </View>
+    </>
   );
 };
 

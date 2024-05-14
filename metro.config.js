@@ -7,7 +7,6 @@ defaultConfig.resolver.assetExts.push(
   // Adds support for `.fcscript` files for Fusionchart
   "fcscript"
 );
-
 defaultConfig.resolver.resolveRequest = (context, moduleName, platform) => {
   if (
     // If the bundle is resolving "event-target-shim" from a module that is part of "react-native-webrtc".

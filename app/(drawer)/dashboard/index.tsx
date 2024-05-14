@@ -68,7 +68,7 @@ export default function DashboardHome() {
     {
       key: "2",
       iconName: "warning",
-      count: 0,
+      count: allReports.length ?? 0,
       label: "Security Alerts",
       color: "#FFC107",
     },

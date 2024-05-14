@@ -1,5 +1,5 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import React from "react";
+import React, { useRef, useState } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   DarkTheme,
@@ -17,7 +17,7 @@ import Toast from "react-native-toast-message";
 
 // Jotai is a primitive and flexible state management library for React.
 //  is a smaller, faster and more flexible alternative to Recoil.
-import { Provider as JotaiProvider } from "jotai";
+import { Provider as JotaiProvider, useAtom } from "jotai";
 // The store is a collection of atoms and derived values
 // that can be used to manage the state of your application.
 import { store } from "@/store";
@@ -32,6 +32,10 @@ import * as Location from "expo-location";
 import { updateLocationToSecureStore } from "@/utils/updateLocationToSecurestore";
 import { Platform } from "react-native";
 import { PermissionsAndroid } from "react-native";
+import * as Notifications from "expo-notifications";
+import useNotificationObserver from "@/hooks/useNotificationObserver";
+import registerForPushNotificationsAsync from "@/utils/notifications/registerPushNotification";
+import { UpdatePushTokentom } from "@/store/user";
 
 interface GeofencingEventData {
   eventType: Location.GeofencingEventType;
@@ -48,6 +52,14 @@ interface Region {
 interface LocationTaskData {
   locations: Location.LocationObject[];
 }
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -87,6 +99,15 @@ export default function RootLayout() {
 }
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+
+  useNotificationObserver();
+
+  const [notification, setNotification] =
+    useState<Notifications.Notification>();
+  const notificationListener = useRef<Notifications.Subscription>();
+  const responseListener = useRef<Notifications.Subscription>();
+
+  const [_, updatePushToken] = useAtom(UpdatePushTokentom);
 
   // Location task definitiona
   const BACKGROUND_LOCATION_UPDATE = "background-location-task";
@@ -162,6 +183,35 @@ function RootLayoutNav() {
     run();
   }, []);
 
+  // handle notifications
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => {
+      if (!token) return;
+      updatePushToken(token);
+      console.log("PUSH TOKEN", token);
+    });
+
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        if (!notification) return;
+
+        setNotification(notification);
+        console.log(notification);
+      });
+
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener?.current!
+      );
+      Notifications.removeNotificationSubscription(responseListener?.current!);
+    };
+  }, []);
+
   TaskManager.defineTask(
     BACKGROUND_LOCATION_UPDATE,
     async ({ data, error }) => {
@@ -171,7 +221,7 @@ function RootLayoutNav() {
       }
       if (data) {
         const { locations } = data as LocationTaskData;
-        console.log("LOCATION", locations);
+        // console.log("LOCATION", locations);
 
         const address = await Location.reverseGeocodeAsync({
           latitude: locations[0].coords.latitude,

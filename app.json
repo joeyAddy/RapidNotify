@@ -25,6 +25,7 @@
       }
     },
     "android": {
+      "googleServicesFile": "./android/app/google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -96,9 +97,7 @@
         "projectId": "e97548cf-059c-4bee-aa86-87cbb5df38a6"
       }
     },
-    "runtimeVersion": {
-      "policy": "sdkVersion"
-    },
+    "runtimeVersion": "1.0.0",
     "updates": {
       "url": "https://u.expo.dev/e97548cf-059c-4bee-aa86-87cbb5df38a6"
     }
