@@ -238,12 +238,10 @@ const Report = () => {
         text1: "You report has reached us.",
         text2: "Please stay calm while the authorities get to you",
       });
-      if (securityUnits) {
-        router.push({
-          pathname: "/map/",
-          params: { securityUnits: JSON.stringify(securityUnits) },
-        });
-      }
+      router.push({
+        pathname: "/map/",
+        params: { securityUnits: JSON.stringify(securityUnits) },
+      });
     } catch (error) {
       console.log("ERROR REPORTING", error);
       Toast.show({
@@ -279,14 +277,10 @@ const Report = () => {
             onSelect={async (selectedItem, index) => {
               console.log(selectedItem, index);
               setForm({ ...form, incidentType: selectedItem.title });
-              const incidentTypeWithDetails = incidents.find(
-                (incident) => incident.type === selectedItem.title
-              );
 
-              setSecurityUnits(incidentTypeWithDetails?.securityUnits);
               await SecureStore.setItemAsync(
-                "security-unit",
-                JSON.stringify(incidentTypeWithDetails?.securityUnits)
+                "incident-type",
+                JSON.stringify(selectedItem)
               );
             }}
             renderButton={(selectedItem, isOpened) => {

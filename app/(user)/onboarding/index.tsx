@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { OnboardFlow } from "react-native-onboard";
 import { useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
@@ -28,12 +28,11 @@ export default function indext() {
     router.push("/(drawer)/dashboard");
     return;
   }
-
   const FooterComponent = (props: FooterProps) => {
     const isLastPage = props.currentPage + 1 === props.pages?.length;
     return (
       <View className="w-full mb-5 flex-row h-auto justify-between bg-black items-center py-6 px-[30px] bg-transparent">
-        <Pressable
+        <TouchableOpacity
           onPress={() => {
             router.replace("/(user)/auth/signin");
           }}
@@ -41,7 +40,7 @@ export default function indext() {
           <Text className="font-extrabold text-[#111] dark:text-white text-lg">
             Skip
           </Text>
-        </Pressable>
+        </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => {

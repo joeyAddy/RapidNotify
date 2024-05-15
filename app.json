@@ -64,26 +64,6 @@
         {
           "iCloudContainerEnvironment": "Production"
         }
-      ],
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "minSdkVersion": 24,
-            "compileSdkVersion": 34,
-            "targetSdkVersion": 33
-          }
-        }
-      ],
-      [
-        "@stream-io/video-react-native-sdk",
-        [
-          "@config-plugins/react-native-webrtc",
-          {
-            "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
-            "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone"
-          }
-        ]
       ]
     ],
     "experiments": {

@@ -170,19 +170,6 @@ function RootLayoutNav() {
     }
   };
 
-  useEffect(() => {
-    requestPermissions();
-    const run = async () => {
-      if (Platform.OS === "android") {
-        await PermissionsAndroid.requestMultiple([
-          "android.permission.POST_NOTIFICATIONS",
-          "android.permission.BLUETOOTH_CONNECT",
-        ]);
-      }
-    };
-    run();
-  }, []);
-
   // handle notifications
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
@@ -308,6 +295,13 @@ function RootLayoutNav() {
                     name="report/index"
                     options={{
                       headerTitle: "Send report",
+                      headerShadowVisible: false,
+                    }}
+                  />
+                  <Stack.Screen
+                    name="emergency-contacts/index"
+                    options={{
+                      headerTitle: "Add emergency contact",
                       headerShadowVisible: false,
                     }}
                   />

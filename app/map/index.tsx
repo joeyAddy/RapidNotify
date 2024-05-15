@@ -14,6 +14,8 @@ import MapView, { Marker, Polyline } from "react-native-maps";
 import * as SecureStore from "expo-secure-store";
 import { SecurityUnit } from "@/constants/IncidentTypes";
 import { Image } from "react-native";
+import { getCommunityWatchUsers } from "@/services/user";
+import { DocumentData } from "firebase/firestore";
 
 const ReportMap = () => {
   const router = useRouter();
@@ -24,9 +26,9 @@ const ReportMap = () => {
 
   const [useLocation, setUseLocation] = useState("");
 
-  const [securityUnits, setSecurityUnits] = useState<Array<SecurityUnit>>([]);
+  const [securityUnits, setSecurityUnits] = useState<Array<DocumentData>>([]);
 
-  const [nearestUnit, setNearestUnit] = useState<SecurityUnit | null>(null);
+  const [nearestUnit, setNearestUnit] = useState<DocumentData | null>(null);
 
   const [coords, setCoords] = useState<
     Array<{ latitude: number; longitude: number }>
@@ -38,7 +40,7 @@ const ReportMap = () => {
     const fetchDirections = async () => {
       if (nearestUnit === null) return;
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/directions/json?origin=${currentUser.location.latitude},${currentUser.location.longitude}&destination=${nearestUnit?.location.latitude},${nearestUnit?.location.longitude}&mode=driving&key=AIzaSyB8zC7w2pEDpwjV0QQI9IsiE-vdViBSEv4`
+        `https://maps.googleapis.com/maps/api/directions/json?origin=${currentUser.location.latitude},${currentUser.location.longitude}&destination=${nearestUnit?.location.latitude},${nearestUnit?.location.longitude}&mode=driving&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_API_KEY}`
       );
       const data = await response.json();
       console.log("DATA DIRECTIONS", data);
@@ -71,28 +73,27 @@ const ReportMap = () => {
 
   useEffect(() => {
     (async () => {
-      const securityUnits = await SecureStore.getItemAsync("security-unit");
-      const parsedSecurityUnits = JSON.parse(securityUnits!) as SecurityUnit[];
-      console.log("UNITS", parsedSecurityUnits);
-      console.log("UNITS FROM PARAMS", params);
+      const securityUnits = await SecureStore.getItemAsync("incident-type");
+
+      const communityWatches = await getCommunityWatchUsers(currentUser.uid);
 
       // Find the nearest security unit
       let minDistance = Number.MAX_VALUE;
-      let nearestUnit: SecurityUnit | null = null;
-      parsedSecurityUnits.forEach((unit) => {
+      let nearestUnit: DocumentData | null = null;
+      communityWatches.forEach((watch) => {
         const unitDistance = calculateDistance(
           currentUser.location.latitude,
           currentUser.location.longitude,
-          unit.location.latitude,
-          unit.location.longitude
+          watch.location.latitude,
+          watch.location.longitude
         );
         if (unitDistance < minDistance) {
           minDistance = unitDistance;
-          nearestUnit = unit;
+          nearestUnit = watch;
         }
       });
       // Filter out the nearest unit from the security units list
-      const filteredSecurityUnits = parsedSecurityUnits.filter(
+      const filteredSecurityUnits = communityWatches.filter(
         (unit) => unit !== nearestUnit
       );
 

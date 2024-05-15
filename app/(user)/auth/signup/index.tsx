@@ -18,6 +18,7 @@ import { createUser } from "@/services/user";
 import { getCurrentPositionAsync, reverseGeocodeAsync } from "expo-location";
 import { TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import { getExpoPushTokenAsync } from "expo-notifications";
 
 const Login = () => {
   const router = useRouter();
@@ -73,6 +74,13 @@ const Login = () => {
         longitude: location.coords.longitude,
         ...address[0],
       };
+
+      const pushToken = await getExpoPushTokenAsync();
+
+      console.log("====================================");
+      console.log("PUSH TOKEN", pushToken);
+      console.log("====================================");
+
       const user = {
         email: userCredential.user.email,
         uid: userCredential.user.uid,
@@ -82,6 +90,8 @@ const Login = () => {
         location: finalLocation,
         profilePhotoUrl: "",
         isCommunityWatch,
+        pushToken,
+        emergencyContacts: [],
       };
 
       await createUser(user);
@@ -161,7 +171,7 @@ const Login = () => {
               }}
               className="rounded-md border bg-green-700 items-center h-14 justify-center flex-[.5] flex-row space-x-2"
             >
-              <FontAwesome name="phone" color="white" size={20} />
+              <FontAwesome name="thumbs-up" color="white" size={20} />
               <Text className="font-bold text-white">Yes</Text>
             </TouchableOpacity>
           </View>

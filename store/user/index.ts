@@ -15,11 +15,8 @@ export const UpdateCurrentUserAtom = atom(
 
 export const userPushTokenAtom = atom("");
 
-export const UpdatePushTokentom = atom(
-  null,
-  async (get, set, newUserDetails: any) => {
-    // if (!newUserDetails) return;
-    console.log("Updating push utokenser", newUserDetails);
-    set(userPushTokenAtom, newUserDetails);
-  }
-);
+export const UpdatePushTokentom = atom(null, async (get, set, token: any) => {
+  // if (!token) return;
+  console.log("Updating push utokenser", token);
+  set(userPushTokenAtom, token);
+});

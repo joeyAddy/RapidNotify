@@ -2,8 +2,10 @@ import { Text, View } from "@/components/Themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { Image, Pressable } from "react-native";
+import { useRouter } from "expo-router";
 
 const Settings = () => {
+  const router = useRouter();
   return (
     <View className="flex-1 pt-10">
       <Image
@@ -24,7 +26,12 @@ const Settings = () => {
           <MaterialCommunityIcons name="form-textbox-password" size={30} />
           <Text className="text-xl font-medium">Change password</Text>
         </Pressable>
-        <Pressable className="flex-row space-x-4 items-center w-full border-b pt-1 pb-5">
+        <Pressable
+          onPress={() => {
+            router.push("/emergency-contacts/");
+          }}
+          className="flex-row space-x-4 items-center w-full border-b pt-1 pb-5"
+        >
           <MaterialCommunityIcons name="shield-alert" size={30} />
           <Text className="text-xl font-medium">Add emergency contact(s)</Text>
         </Pressable>

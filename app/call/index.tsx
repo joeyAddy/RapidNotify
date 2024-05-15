@@ -18,7 +18,7 @@ const Call = () => {
         Toll free emergency line
       </Text>
       <Text className="text-white font=bold text-4xl text-center mt-10">
-        Security Unit
+        Community Watch
       </Text>
       <Pressable
         onPress={() => router.push("/(drawer)/dashboard")}

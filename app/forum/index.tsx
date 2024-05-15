@@ -56,7 +56,7 @@ const Forum = () => {
 
         const channel = chatClient.channel(
           "team",
-          `${currentUser.location.city}_forum`,
+          `${currentUser.location.city.replaceAll(" ", "_")}_forum`,
           {
             name: `${currentUser.location.city} forum`,
             members: [chatUserId],
