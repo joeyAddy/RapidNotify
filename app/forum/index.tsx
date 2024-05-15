@@ -49,9 +49,9 @@ const Forum = () => {
   useEffect(() => {
     const setupClient = async () => {
       try {
-        console.log("seeting client");
+        console.log("setting client");
 
-        chatClient.connectUser(user, chatClient.devToken(chatUserId));
+        await chatClient.connectUser(user, chatClient.devToken(chatUserId));
         setClientIsReady(true);
 
         const channel = chatClient.channel(
@@ -67,7 +67,7 @@ const Forum = () => {
         // connectUser is an async function. So you can choose to await for it or not depending on your use case (e.g. to show custom loading indicator)
         // But in case you need the chat to load from offline storage first then you should render chat components
         // immediately after calling `connectUser()`.
-        // BUT ITS NECESSARY TO CALL connectUser FIRST IN ANY CASE.
+        // BUT IT'S NECESSARY TO CALL connectUser FIRST IN ANY CASE.
       } catch (error) {
         if (error instanceof Error) {
           console.error(
@@ -81,9 +81,14 @@ const Forum = () => {
 
     // If the chat client has a value in the field `userID`, a user is already connected
     // and we can skip trying to connect the user again.
-    if (!chatClient.userID) {
+    if (typeof chatClient.userID === "undefined") {
       setupClient();
     }
+
+    return () => {
+      chatClient.disconnect();
+      console.log("Chat client disconnected");
+    };
   }, [chatClient.userID]);
 
   if (!clientIsReady && !chatClient.userID) {
