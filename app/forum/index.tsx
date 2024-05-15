@@ -5,7 +5,6 @@ import {
   Channel,
   ChannelList,
   Chat,
-  DefaultStreamChatGenerics,
   MessageInput,
   MessageList,
   MessageType,
@@ -18,6 +17,8 @@ import { useAppContext } from "@/context/chatContext";
 import { useAtom } from "jotai";
 import { currentUserAtom } from "@/store/user";
 
+const chatClient = StreamChat.getInstance(chatApiKey);
+
 const Forum = () => {
   const [clientIsReady, setClientIsReady] = useState(false);
 
@@ -28,9 +29,7 @@ const Forum = () => {
 
   const router = useRouter();
 
-  const [client, setClient] = useState<StreamChat<DefaultStreamChatGenerics>>();
-
-  const { channel, setChannel } = useAppContext();
+  const { setChannel } = useAppContext();
 
   const user = {
     id: chatUserId,
@@ -48,46 +47,27 @@ const Forum = () => {
   };
 
   useEffect(() => {
-    const chatClient = StreamChat.getInstance(chatApiKey);
     const setupClient = async () => {
       try {
-        console.log("setting client");
+        console.log("seeting client");
 
-        await chatClient
-          .connectUser(user, chatClient.devToken(chatUserId))
-          .then(async () => {
-            const channel = chatClient.channel(
-              "team",
-              `${currentUser.location.city}_forum`,
-              {
-                name: `${currentUser.location.city} forum`,
-                members: [chatUserId],
-              }
-            );
-
-            await channel
-              .watch()
-              .then(() => {
-                setChannel(channel);
-                setClient(chatClient);
-                console.log("created forum");
-              })
-              .catch((error) => {
-                console.log(
-                  "something went wrong with creating channel",
-                  error
-                );
-              });
-          })
-          .catch((error) => {
-            console.log("Error connecting user", error);
-          });
+        chatClient.connectUser(user, chatClient.devToken(chatUserId));
         setClientIsReady(true);
 
+        const channel = chatClient.channel(
+          "team",
+          `${currentUser.location.city.replaceAll(" ", "_")}_forum`,
+          {
+            name: `${currentUser.location.city} forum`,
+            members: [chatUserId],
+          }
+        );
+
+        await channel.watch();
         // connectUser is an async function. So you can choose to await for it or not depending on your use case (e.g. to show custom loading indicator)
         // But in case you need the chat to load from offline storage first then you should render chat components
         // immediately after calling `connectUser()`.
-        // BUT IT'S NECESSARY TO CALL connectUser FIRST IN ANY CASE.
+        // BUT ITS NECESSARY TO CALL connectUser FIRST IN ANY CASE.
       } catch (error) {
         if (error instanceof Error) {
           console.error(
@@ -101,14 +81,12 @@ const Forum = () => {
 
     // If the chat client has a value in the field `userID`, a user is already connected
     // and we can skip trying to connect the user again.
-    if (typeof chatClient.userID === "undefined") {
+    if (!chatClient.userID) {
       setupClient();
     }
+  }, [chatClient.userID]);
 
-    if (chatClient) return () => chatClient.disconnectUser();
-  }, [chatUserId]);
-
-  if (!clientIsReady && !client?.userID) {
+  if (!clientIsReady && !chatClient.userID) {
     return (
       <View className="flex-1 items-center justify-center">
         <ActivityIndicator size={40} color="orange" />
