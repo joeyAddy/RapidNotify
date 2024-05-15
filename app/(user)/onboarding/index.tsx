@@ -24,10 +24,10 @@ export default function indext() {
 
   const colorScheme = useColorScheme();
 
-  if (currentUser !== null) {
-    router.push("/(drawer)/dashboard");
-    return;
-  }
+  // if (currentUser !== null) {
+  //   router.push("/(drawer)/dashboard");
+  //   return;
+  // }
   const FooterComponent = (props: FooterProps) => {
     const isLastPage = props.currentPage + 1 === props.pages?.length;
     return (
