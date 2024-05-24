@@ -16,7 +16,7 @@ import {
 import { gooogleProvider, facebookProvider, auth } from "@/firebaseConfig";
 import * as SecureStore from "expo-secure-store";
 import { getCurrentPositionAsync, reverseGeocodeAsync } from "expo-location";
-import { UpdateCurrentUserAtom } from "@/store/user";
+import { UpdateCurrentUserAtom, currentUserAtom } from "@/store/user";
 import { useAtom } from "jotai";
 import { getAllUsers, getUserByUid, updateUserByUid } from "@/services/user";
 
@@ -26,6 +26,8 @@ const Login = () => {
   const colorScheme = useColorScheme();
 
   const [_, updateCurrentUser] = useAtom(UpdateCurrentUserAtom);
+
+  const [currentUser] = useAtom(currentUserAtom);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -115,6 +117,13 @@ const Login = () => {
       setCanSubmit(true);
     }
   }, [password, email]);
+
+  useEffect(() => {
+    if (currentUser !== null) {
+      router.push("/(drawer)/dashboard");
+      return;
+    }
+  }, []);
 
   // signInWithPopup(auth, gooogleProvider)
   //   .then((result) => {

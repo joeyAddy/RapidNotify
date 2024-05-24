@@ -16,15 +16,15 @@ const Settings = () => {
       <View className="mt-10 space-y-4 px-4">
         <Pressable className="flex-row space-x-4 items-center w-full border-b pt-1 pb-5">
           <MaterialCommunityIcons name="account" size={30} />
-          <Text className="text-xl font-medium">Account</Text>
+          <Text className="text-lg font-bold">Account</Text>
         </Pressable>
         <Pressable className="flex-row space-x-4 items-center w-full border-b pt-1 pb-5">
           <MaterialCommunityIcons name="diamond-stone" size={30} />
-          <Text className="text-xl font-medium">Suscription</Text>
+          <Text className="text-lg font-bold">Suscription</Text>
         </Pressable>
         <Pressable className="flex-row space-x-4 items-center w-full border-b pt-1 pb-5">
           <MaterialCommunityIcons name="form-textbox-password" size={30} />
-          <Text className="text-xl font-medium">Change password</Text>
+          <Text className="text-lg font-bold">Change password</Text>
         </Pressable>
         <Pressable
           onPress={() => {
@@ -33,11 +33,11 @@ const Settings = () => {
           className="flex-row space-x-4 items-center w-full border-b pt-1 pb-5"
         >
           <MaterialCommunityIcons name="shield-alert" size={30} />
-          <Text className="text-xl font-medium">Add emergency contact(s)</Text>
+          <Text className="text-lg font-bold">Add emergency contact(s)</Text>
         </Pressable>
         <Pressable className="flex-row space-x-4 items-center w-full border-b pt-1 pb-5">
           <MaterialCommunityIcons name="shield-check" size={30} />
-          <Text className="text-xl font-medium">Security & Privacy Policy</Text>
+          <Text className="text-lg font-bold">Security & Privacy Policy</Text>
         </Pressable>
       </View>
     </View>

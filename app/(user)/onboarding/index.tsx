@@ -24,16 +24,22 @@ export default function indext() {
 
   const colorScheme = useColorScheme();
 
-  // if (currentUser !== null) {
-  //   router.push("/(drawer)/dashboard");
-  //   return;
-  // }
+  useEffect(() => {
+    if (currentUser !== null) {
+      router.push("/(drawer)/dashboard");
+      return;
+    }
+  }, []);
+
   const FooterComponent = (props: FooterProps) => {
     const isLastPage = props.currentPage + 1 === props.pages?.length;
     return (
       <View className="w-full mb-5 flex-row h-auto justify-between bg-black items-center py-6 px-[30px] bg-transparent">
         <TouchableOpacity
           onPress={() => {
+            if (props.setCanContinue) {
+              props.setCanContinue(false);
+            }
             router.replace("/(user)/auth/signin");
           }}
         >

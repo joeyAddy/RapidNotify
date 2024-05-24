@@ -20,3 +20,14 @@ export const UpdatePushTokentom = atom(null, async (get, set, token: any) => {
   console.log("Updating push utokenser", token);
   set(userPushTokenAtom, token);
 });
+
+const emergencyContactsAtom = atom([]);
+
+export const updateEmergencyContacts = atom(
+  null,
+  async (get, set, newContact: any) => {
+    // if (!newContact) return;
+    console.log("Updating emergency contact", newContact);
+    set(emergencyContactsAtom, newContact);
+  }
+);

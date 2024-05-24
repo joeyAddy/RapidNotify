@@ -30,12 +30,14 @@ import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
 
 import { updateLocationToSecureStore } from "@/utils/updateLocationToSecurestore";
-import { Platform } from "react-native";
+import { Alert, Linking, Platform } from "react-native";
 import { PermissionsAndroid } from "react-native";
 import * as Notifications from "expo-notifications";
 import useNotificationObserver from "@/hooks/useNotificationObserver";
 import registerForPushNotificationsAsync from "@/utils/notifications/registerPushNotification";
 import { UpdatePushTokentom } from "@/store/user";
+
+import * as IntentLauncher from "expo-intent-launcher";
 
 interface GeofencingEventData {
   eventType: Location.GeofencingEventType;
@@ -163,12 +165,40 @@ function RootLayoutNav() {
         await Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_UPDATE, {
           accuracy: Location.Accuracy.Balanced,
         });
+        console.log("Granted permission for foreground");
 
         // Call the function to start geofencing for Kaduna regions
         await startGeofencingForKadunaRegions();
+      } else {
+        Alert.alert("alert Message", "Instructions based on OS", [
+          {
+            text: "Open Settings",
+            onPress: () => goToSettings(),
+            style: "cancel",
+          },
+          // { text: Languages.DENY, onPress: () => router.goback()},
+        ]);
       }
     }
   };
+
+  const goToSettings = () => {
+    if (Platform.OS == "ios") {
+      // Linking for iOS
+      Linking.openURL("app-settings:");
+    } else {
+      // IntentLauncher for Android
+      IntentLauncher.startActivityAsync(
+        IntentLauncher.ActivityAction.MANAGE_ALL_APPLICATIONS_SETTINGS
+      );
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      await requestPermissions();
+    })();
+  }, []);
 
   // handle notifications
   useEffect(() => {
@@ -304,10 +334,6 @@ function RootLayoutNav() {
                       headerTitle: "Add emergency contact",
                       headerShadowVisible: false,
                     }}
-                  />
-                  <Stack.Screen
-                    name="call/index"
-                    options={{ headerShown: false }}
                   />
                   <Stack.Screen
                     name="map/index"

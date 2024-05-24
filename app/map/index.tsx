@@ -252,7 +252,7 @@ const ReportMap = () => {
         </View>
         <View className="bg-transparent p-4 items-center justify-center flex-1">
           <Pressable
-            onPress={() => router.push("/call/")}
+            onPress={() => router.push("/(drawer)/dashboard/call")}
             className="items-center space-y-1"
           >
             <View

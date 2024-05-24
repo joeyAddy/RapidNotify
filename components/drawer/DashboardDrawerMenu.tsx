@@ -29,7 +29,7 @@ const DashboardDrawerMenu = (props: DrawerContentComponentProps) => {
   return (
     <View className="flex-1 pt-20">
       <View className="h-20 w-full mb-14 mx-auto items-center space-y-2">
-        {currentUser.profilePhotoUrl !== "" ? (
+        {currentUser?.profilePhotoUrl !== "" ? (
           <Image
             className="h-full w-20 rounded-full bg-black"
             style={{

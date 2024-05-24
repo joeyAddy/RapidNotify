@@ -247,7 +247,7 @@ export default function DashboardHome() {
               onPress={() => {
                 if (securityUnits) {
                   hideModal();
-                  router.push("/call/");
+                  router.push("/(drawer)/dashboard/call");
                 } else {
                   setErrorMessage("Choose Incident first");
                 }
