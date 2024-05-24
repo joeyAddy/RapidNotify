@@ -18,5 +18,3 @@
 -keep class org.webrtc.** { *; }
 
 # @generated end expo-build-properties
-
--keep class **.zego.**  { *; }
