@@ -14,6 +14,7 @@ import {
   FirestoreError,
   arrayUnion,
   getDoc,
+  arrayRemove,
 } from "firebase/firestore";
 import Toast from "react-native-toast-message";
 
@@ -90,50 +91,59 @@ export const updateUserByUid = async (
   }
 };
 
-// Function to get users by location and query
+/**
+ * Retrieves users from Firestore based on location, query text, and email, while excluding the current user and their emergency contacts.
+ * @param {string} location - The location (e.g., city) to filter the users by.
+ * @param {string} queryText - The query text to filter the users by (e.g., full name or email).
+ * @returns {Promise<DocumentData[]>} A promise that resolves to an array of DocumentData representing the filtered users.
+ */
 export const getUsersByLocationAndQuery = async (
   location: string,
   queryText: string
 ): Promise<DocumentData[]> => {
+  if (!location || !queryText) return [];
   try {
+    // Retrieve the current user from secure storage
     const user = await getUserFromSecureStore();
 
+    // Query the Firestore collection to get the current user's data
     const q = query(collection(db, "users"), where("uid", "==", user.uid));
     const querySnapshot: QuerySnapshot = await getDocs(q);
 
-    console.log("====================================");
-    console.log("USERdsfgfvf", querySnapshot.docs[0].data());
-    console.log("====================================");
-
+    // Handle the case where the query does not return any documents
     if (querySnapshot.empty) {
       console.log("No matching documents.");
       return [];
     }
 
+    // Extract the current user's document and emergency contacts from the query result
     const userDoc = querySnapshot.docs[0];
     const userFromStore = await getDoc(userDoc.ref);
     const emergencyContacts = userFromStore.data()?.emergencyContacts || [];
 
-    // Create a set of uids from emergencyContacts for quick lookup
+    // Create a set of emergency contact UIDs for quick lookup
     const emergencyContactUids = new Set(emergencyContacts);
 
-    console.log("Contact IDs", emergencyContactUids, "user id", user.uid);
-
+    // Reference to the Firestore collection of users
     const usersRef = collection(db, "users");
 
-    // First, query by location only
+    // First, query by location and email
     const locationQuery = query(
-      usersRef,
-      where("location.city", "==", location)
+      usersRef
+      // where("location.city", "==", location)
     );
+
     const locationSnapshot = await getDocs(locationQuery);
 
-    // Filter results manually by full name and excluding emergency contacts
+    // Filter results manually by full name, email, and excluding emergency contacts
     const filteredUsers: DocumentData[] = [];
     locationSnapshot.forEach((doc) => {
       const userData = doc.data();
+      console.log("User found", userData);
+
       if (
-        userData.fullName.toLowerCase().includes(queryText.toLowerCase()) &&
+        (userData.fullName.toLowerCase().includes(queryText.toLowerCase()) ||
+          userData.email.toLowerCase().includes(queryText.toLowerCase())) &&
         userData.uid !== user.uid &&
         !emergencyContactUids.has(userData.uid)
       ) {
@@ -147,6 +157,7 @@ export const getUsersByLocationAndQuery = async (
     throw error;
   }
 };
+
 // Function to add an emergency contact to a user
 export const addEmergencyContact = async (
   uid: string,
@@ -180,6 +191,43 @@ export const addEmergencyContact = async (
     });
   } catch (error: unknown) {
     console.error("Error adding emergency contact:", error);
+    throw error;
+  }
+};
+
+// Function to remove an emergency contact from a user
+export const removeEmergencyContact = async (
+  uid: string,
+  contactToRemove: DocumentData
+): Promise<void> => {
+  try {
+    const q = query(collection(db, "users"), where("uid", "==", uid));
+    const querySnapshot: QuerySnapshot = await getDocs(q);
+
+    console.log("====================================");
+    console.log("USERdsfgfvf", querySnapshot.docs[0].data());
+    console.log("====================================");
+
+    if (querySnapshot.empty) {
+      console.log("No matching documents.");
+      return;
+    }
+
+    const userDoc = querySnapshot.docs[0];
+    await updateDoc(userDoc.ref, {
+      emergencyContacts: arrayRemove(contactToRemove.uid),
+    });
+
+    Toast.show({
+      swipeable: true,
+      text1: `${contactToRemove.fullName} has been removed from emergency contacts`,
+      type: "success",
+      text1Style: {},
+      position: "top",
+      topOffset: 40,
+    });
+  } catch (error: unknown) {
+    console.error("Error removing emergency contact:", error);
     throw error;
   }
 };

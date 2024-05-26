@@ -33,7 +33,7 @@ const Settings = () => {
           className="flex-row space-x-4 items-center w-full border-b pt-1 pb-5"
         >
           <MaterialCommunityIcons name="shield-alert" size={30} />
-          <Text className="text-lg font-bold">Add emergency contact(s)</Text>
+          <Text className="text-lg font-bold">Emergency contacts</Text>
         </Pressable>
         <Pressable className="flex-row space-x-4 items-center w-full border-b pt-1 pb-5">
           <MaterialCommunityIcons name="shield-check" size={30} />

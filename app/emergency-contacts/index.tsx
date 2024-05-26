@@ -7,6 +7,7 @@ import {
   getAllUsers,
   getUserByUid,
   getUsersByLocationAndQuery,
+  removeEmergencyContact,
 } from "@/services/user";
 import { useAtom } from "jotai";
 import { UpdateCurrentUserAtom, currentUserAtom } from "@/store/user";
@@ -18,7 +19,9 @@ import * as SecureStore from "expo-secure-store";
 const EmergencyContacts = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
-  const [isAddingContact, setIsAddingContact] = useState(false);
+  const [contactLoadingStates, setContactLoadingStates] = useState<{
+    [key: string]: { isAdding: boolean; isRemoving: boolean };
+  }>({});
   const [allUsers, setAllUsers] = useState<DocumentData[]>([]);
   const [emergencyContacts, setEmergencyContacts] = useState<DocumentData[]>(
     []
@@ -27,9 +30,23 @@ const EmergencyContacts = () => {
   const [currentUser] = useAtom(currentUserAtom);
   const [_, updateCurrentUser] = useAtom(UpdateCurrentUserAtom);
 
+  const updateContactLoadingState = (
+    userId: string,
+    loadingType: "isAdding" | "isRemoving",
+    value: boolean
+  ) => {
+    setContactLoadingStates((prevStates) => ({
+      ...prevStates,
+      [userId]: {
+        ...prevStates[userId],
+        [loadingType]: value,
+      },
+    }));
+  };
+
   const handleAddContact = async (user: DocumentData) => {
     if (!user) return;
-    setIsAddingContact(true);
+    updateContactLoadingState(user.uid, "isAdding", true);
     try {
       await addEmergencyContact(currentUser.uid, user);
 
@@ -40,6 +57,43 @@ const EmergencyContacts = () => {
       await SecureStore.setItemAsync(
         "userDetails",
         JSON.stringify(finalUserData)
+      );
+
+      //  Remove the added user from allUsers array
+      setAllUsers((prevUsers) => prevUsers.filter((u) => u.uid !== user.uid));
+    } catch (error) {
+      Toast.show({
+        text1: "Something went wrong!",
+        text2: "Please try again",
+        swipeable: true,
+        autoHide: true,
+        topOffset: 40,
+        position: "top",
+        type: "error",
+      });
+    } finally {
+      updateContactLoadingState(user.uid, "isAdding", false);
+    }
+  };
+
+  const handleRemoveContact = async (user: DocumentData) => {
+    if (!user) return;
+    updateContactLoadingState(user.uid, "isRemoving", true);
+    try {
+      await removeEmergencyContact(currentUser.uid, user);
+
+      const finalUserData = await getUserByUid(currentUser.uid);
+
+      await updateCurrentUser(finalUserData);
+
+      await SecureStore.setItemAsync(
+        "userDetails",
+        JSON.stringify(finalUserData)
+      );
+
+      // Remove the removed user from emergencyContacts array
+      setEmergencyContacts((prevContacts) =>
+        prevContacts.filter((contact) => contact.uid !== user.uid)
       );
     } catch (error) {
       Toast.show({
@@ -52,7 +106,7 @@ const EmergencyContacts = () => {
         type: "error",
       });
     } finally {
-      setIsAddingContact(false);
+      updateContactLoadingState(user.uid, "isRemoving", false);
     }
   };
 
@@ -63,7 +117,7 @@ const EmergencyContacts = () => {
           setIsSearching(true);
 
           const users = await getUsersByLocationAndQuery(
-            currentUser.location.city,
+            currentUser.location.region,
             searchQuery
           );
 
@@ -149,7 +203,7 @@ const EmergencyContacts = () => {
                   handleAddContact(user);
                 }}
               >
-                {!isAddingContact ? (
+                {!contactLoadingStates[user.uid]?.isAdding ? (
                   <MaterialCommunityIcons
                     name="account-plus"
                     color="green"
@@ -203,10 +257,10 @@ const EmergencyContacts = () => {
                 </View>
                 <TouchableOpacity
                   onPress={() => {
-                    handleAddContact(user);
+                    handleRemoveContact(user);
                   }}
                 >
-                  {!isAddingContact ? (
+                  {!contactLoadingStates[user.uid]?.isRemoving ? (
                     <MaterialCommunityIcons
                       name="account-remove"
                       color="red"

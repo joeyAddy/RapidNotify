@@ -3,7 +3,7 @@ import { Text, View, SafeAreaView } from "@/components/Themed";
 import { StatusBar } from "expo-status-bar";
 import { ActivityIndicator, Divider, TextInput } from "react-native-paper";
 import { Image, Pressable, useColorScheme } from "react-native";
-import { useRouter } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 import Toast from "react-native-toast-message";
 import Colors from "@/constants/Colors";
 import {
@@ -16,9 +16,10 @@ import {
 import { gooogleProvider, facebookProvider, auth } from "@/firebaseConfig";
 import * as SecureStore from "expo-secure-store";
 import { getCurrentPositionAsync, reverseGeocodeAsync } from "expo-location";
-import { UpdateCurrentUserAtom, currentUserAtom } from "@/store/user";
+import { UpdateCurrentUserAtom } from "@/store/user";
 import { useAtom } from "jotai";
-import { getAllUsers, getUserByUid, updateUserByUid } from "@/services/user";
+import { getUserByUid, updateUserByUid } from "@/services/user";
+import { getUserFromSecureStore } from "@/utils/getUserFromSecureStore";
 
 const Login = () => {
   const router = useRouter();
@@ -26,8 +27,6 @@ const Login = () => {
   const colorScheme = useColorScheme();
 
   const [_, updateCurrentUser] = useAtom(UpdateCurrentUserAtom);
-
-  const [currentUser] = useAtom(currentUserAtom);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -119,10 +118,13 @@ const Login = () => {
   }, [password, email]);
 
   useEffect(() => {
-    if (currentUser !== null) {
-      router.push("/(drawer)/dashboard");
-      return;
-    }
+    (async () => {
+      const user = await getUserFromSecureStore();
+      if (user !== null) {
+        <Redirect href="/(drawer)/dashboard" />;
+        return;
+      }
+    })();
   }, []);
 
   // signInWithPopup(auth, gooogleProvider)

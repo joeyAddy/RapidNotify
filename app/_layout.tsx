@@ -336,6 +336,10 @@ function RootLayoutNav() {
                     }}
                   />
                   <Stack.Screen
+                    name="call/index"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
                     name="map/index"
                     options={{ headerShown: false }}
                   />

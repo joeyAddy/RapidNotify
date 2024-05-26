@@ -8,28 +8,32 @@ import {
 } from "react-native";
 import React, { useEffect } from "react";
 import { OnboardFlow } from "react-native-onboard";
-import { useRouter } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import { OnboardingDataType, onboardingData } from "@/locales";
 import { FooterProps } from "react-native-onboard/lib/OnboardFlow/Footer";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { AntDesign } from "@expo/vector-icons";
-import { useAtom } from "jotai";
-import { currentUserAtom } from "@/store/user";
+import * as SecureStore from "expo-secure-store";
 
-export default function indext() {
+export default function Onboarding() {
   const router = useRouter();
-
-  const [currentUser] = useAtom(currentUserAtom);
 
   const colorScheme = useColorScheme();
 
   useEffect(() => {
-    if (currentUser !== null) {
-      router.push("/(drawer)/dashboard");
-      return;
-    }
+    (async () => {
+      const onboardingCompleted = await SecureStore.getItemAsync(
+        "onboardingCompleted"
+      );
+      if (onboardingCompleted === "true") {
+        // User has completed onboarding, navigate to the appropriate screen
+        <Redirect href="/(user)/auth/signin" />;
+      }
+    })();
   }, []);
+
+  // Todo: fucnton to print hello world
 
   const FooterComponent = (props: FooterProps) => {
     const isLastPage = props.currentPage + 1 === props.pages?.length;
@@ -79,7 +83,10 @@ export default function indext() {
   return (
     <OnboardFlow
       pageStyle={{ paddingHorizontal: 30 }}
-      onDone={() => router.replace("/(user)/auth/signin")}
+      onDone={async () => {
+        await SecureStore.setItemAsync("onboardingCompleted", "true");
+        router.replace("/(user)/auth/signin");
+      }}
       paginationSelectedColor={Colors[colorScheme ?? "light"].text}
       style={{
         backgroundColor: Colors[colorScheme ?? "light"].background,
