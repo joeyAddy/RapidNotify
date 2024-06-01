@@ -11,7 +11,7 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk",
-        "image": "stable"
+        "image": "latest"
       },
       "channel": "staging"
     },
