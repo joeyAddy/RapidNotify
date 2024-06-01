@@ -18,7 +18,12 @@ const Settings = () => {
           <MaterialCommunityIcons name="account" size={30} />
           <Text className="text-lg font-bold">Account</Text>
         </Pressable>
-        <Pressable className="flex-row space-x-4 items-center w-full border-b pt-1 pb-5">
+        <Pressable
+          onPress={() => {
+            router.push("/suscription/");
+          }}
+          className="flex-row space-x-4 items-center w-full border-b pt-1 pb-5"
+        >
           <MaterialCommunityIcons name="diamond-stone" size={30} />
           <Text className="text-lg font-bold">Suscription</Text>
         </Pressable>
@@ -28,12 +33,12 @@ const Settings = () => {
         </Pressable>
         <Pressable
           onPress={() => {
-            router.push("/emergency-contacts/");
+            router.push("/add-emergency-contacts/");
           }}
           className="flex-row space-x-4 items-center w-full border-b pt-1 pb-5"
         >
           <MaterialCommunityIcons name="shield-alert" size={30} />
-          <Text className="text-lg font-bold">Emergency contacts</Text>
+          <Text className="text-lg font-bold">Add emergency contacts</Text>
         </Pressable>
         <Pressable className="flex-row space-x-4 items-center w-full border-b pt-1 pb-5">
           <MaterialCommunityIcons name="shield-check" size={30} />

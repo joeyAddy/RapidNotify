@@ -120,8 +120,8 @@ const Login = () => {
   useEffect(() => {
     (async () => {
       const user = await getUserFromSecureStore();
-      if (user !== null) {
-        <Redirect href="/(drawer)/dashboard" />;
+      if (user != null) {
+        router.push("/(drawer)/dashboard");
         return;
       }
     })();

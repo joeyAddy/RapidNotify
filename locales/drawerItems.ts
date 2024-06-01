@@ -32,6 +32,11 @@ export const drawerItems: DrawerItems[] = [
     iconName: "database-marker",
   },
   {
+    label: "Emergency contacts",
+    path: "/(drawer)/emergency-contacts",
+    iconName: "shield-alert",
+  },
+  {
     label: "Settings",
     path: "/(drawer)/settings",
     iconName: "gear",

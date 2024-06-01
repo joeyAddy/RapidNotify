@@ -33,6 +33,9 @@ const DrawerLayout = () => {
       <Drawer
         screenOptions={{
           headerShown: false,
+          drawerStyle: {
+            width: "70%",
+          },
         }}
         drawerContent={(draweProps: DrawerContentComponentProps) => (
           <DashboardDrawerMenu {...draweProps} />
@@ -159,6 +162,37 @@ const DrawerLayout = () => {
                   )}
                 </Pressable>
               </Link>
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="emergency-contacts/index"
+          options={{
+            headerShown: true,
+            headerTitle: "Emergency Contacts",
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
+            headerLeft: () => (
+              <Pressable onPress={() => router.back()} className="pl-4">
+                <AntDesign name={"arrowleft"} size={24} color="black" />
+              </Pressable>
+            ),
+            headerRight: () => (
+              <Pressable
+                onPress={() => {
+                  router.push("/add-emergency-contacts/");
+                }}
+              >
+                {({ pressed }) => (
+                  <AntDesign
+                    className="w-fit bg-transparent"
+                    name="plussquare"
+                    size={24}
+                    color="black"
+                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
+                )}
+              </Pressable>
             ),
           }}
         />

@@ -329,7 +329,7 @@ function RootLayoutNav() {
                     }}
                   />
                   <Stack.Screen
-                    name="emergency-contacts/index"
+                    name="add-emergency-contacts/index"
                     options={{
                       headerTitle: "Add emergency contact",
                       headerShadowVisible: false,
@@ -340,12 +340,26 @@ function RootLayoutNav() {
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen
+                    name="suscription/index"
+                    options={{
+                      headerTitle: "Suscription",
+                      headerShadowVisible: false,
+                      presentation: "modal",
+                      gestureEnabled: true,
+                      gestureDirection: "vertical",
+                    }}
+                  />
+                  <Stack.Screen
                     name="map/index"
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen
                     name="modal"
-                    options={{ presentation: "modal" }}
+                    options={{
+                      presentation: "modal",
+                      gestureEnabled: true,
+                      gestureDirection: "vertical",
+                    }}
                   />
                 </Stack>
               </OverlayProvider>

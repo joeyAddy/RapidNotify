@@ -6,34 +6,21 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { OnboardFlow } from "react-native-onboard";
-import { Redirect, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import { OnboardingDataType, onboardingData } from "@/locales";
 import { FooterProps } from "react-native-onboard/lib/OnboardFlow/Footer";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { AntDesign } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
+import { Alert } from "react-native";
 
 export default function Onboarding() {
   const router = useRouter();
 
   const colorScheme = useColorScheme();
-
-  useEffect(() => {
-    (async () => {
-      const onboardingCompleted = await SecureStore.getItemAsync(
-        "onboardingCompleted"
-      );
-      if (onboardingCompleted === "true") {
-        // User has completed onboarding, navigate to the appropriate screen
-        <Redirect href="/(user)/auth/signin" />;
-      }
-    })();
-  }, []);
-
-  // Todo: fucnton to print hello world
 
   const FooterComponent = (props: FooterProps) => {
     const isLastPage = props.currentPage + 1 === props.pages?.length;
@@ -80,6 +67,22 @@ export default function Onboarding() {
       </View>
     );
   };
+
+  useLayoutEffect(() => {
+    (async () => {
+      const onboardingCompleted = await SecureStore.getItemAsync(
+        "onboardingCompleted"
+      );
+      if (onboardingCompleted === "true") {
+        // User has completed onboarding, navigate to the appropriate screen
+        console.log("has see onboarding", onboardingCompleted);
+
+        router.push("/(user)/auth/signin");
+        return;
+      }
+    })();
+  }, []);
+
   return (
     <OnboardFlow
       pageStyle={{ paddingHorizontal: 30 }}
